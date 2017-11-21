@@ -1,0 +1,15 @@
+{
+  "name": "webradio-metadata",
+  "version": "0.1.0",
+  "description": "API knowledge base to get metadata of radio streams",
+  "main": "getStreamMetadata.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Alexandre Storelli",
+  "license": "AGPL-3.0",
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.6.1"
+  }
+}
