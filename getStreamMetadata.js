@@ -1,9 +1,4 @@
 let urls = require("./urls.js");
-//let parserRadioking = ;
-//let parsers = require("parsers.js");
-//const PARSER_RADIOKING = "radioking";
-
-
 
 var getStreamMetadata = function(country, name, callback) {
 	for (let i=0; i<urls.length; i++) {				// loop on countries
@@ -25,12 +20,9 @@ var getStreamMetadata = function(country, name, callback) {
 	return callback("radio not found", null);
 }
 
-
-
 module.exports = getStreamMetadata;
 
-if (process.argv.length >= 4 && process.argv[1].slice(-20) == "getStreamMetadata.js") { // standalone user-agent
-	//console.log("getStreamMetadata");
+if (process.argv.length >= 4 && process.argv[1].slice(-20) == "getStreamMetadata.js") { // standalone usage
 	getStreamMetadata(process.argv[2], process.argv[3], function(err, data) {
 		console.log("err=" + err + " – data=" + data);
 	});

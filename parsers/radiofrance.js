@@ -1,9 +1,5 @@
 var get = require("./get.js");
 
-/*var cleanMeta = function(meta) {
-	return meta.replace(/\+/g, " ").replace(/-/g, "").replace(/  +/g, " ").replace("(Edit OUI FM)", "").replace(/\[ \]/g, " ").replace(/"/g, "");
-}*/
-
 module.exports = function(exturl, callback) {
 	get(exturl, function(err, result) {
 		try {
