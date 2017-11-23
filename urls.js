@@ -10,7 +10,6 @@ module.exports = [
 			{
 				"name": "Radio Nova",
 				"url": "https://www.nova.fr/radio/19577/player",
-				"parser": "self"
 			},
 			{
 				"name": "France Inter",
@@ -18,9 +17,22 @@ module.exports = [
 				"parser": "radiofrance"
 			},
 			{
+				"name": "France Info",
+				"url": "https://www.francetvinfo.fr/replay-radio/grille-des-emissions/",
+			},
+			{
 				"name": "Europe 1",
 				"url": "http://cdn1-europe1.new2.ladmedia.fr/var/europe1/storage/diffusions_europe1.js",
-				"parser": "self"
+			},
+			{
+				"name": "BFM Business",
+				"url": "http://bfmbusiness.bfmtv.com/current-emission/3",
+				"parser": "bfm"
+			},
+			{
+				"name": "RMC",
+				"url": "http://bfmbusiness.bfmtv.com/current-emission/1",
+				"parser": "bfm"
 			}
 		]
 	}

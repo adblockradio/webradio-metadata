@@ -5,17 +5,21 @@ var get = require("./get.js");
 }*/
 
 module.exports = function(exturl, callback) {
-	get(exturl, function(err, result) {
+	get(exturl, function(err, result, corsEnabled) {
+		if (err) {
+			return callback(err, null, null);
+		}
+		
 		try {
 			parsedResult = JSON.parse(result);
 		} catch(e) {
-			return callback(e.message, null);
+			return callback(e.message, null, null);
 		}
 		if (parsedResult["code"] === "success") {
-			return callback(null, parsedResult["results"]["title_str"]);
+			return callback(null, parsedResult["results"]["title_str"], corsEnabled);
 		} else {
 			//console.log(result);
-			return callback(parsedResult["message"], null);
+			return callback(parsedResult["message"], null, corsEnabled);
 		}
 	});
 }

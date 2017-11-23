@@ -1,11 +1,15 @@
 var get = require("./get.js");
 
 module.exports = function(exturl, callback) {
-	get(exturl, function(err, result) {
+	get(exturl, function(err, result, corsEnabled) {
+		if (err) {
+			return callback(err, null, null);
+		}
+		
 		try {
 			parsedResult = JSON.parse(result.slice(8));	// remove "var cnt=" at the beginning
 		} catch(e) {
-			return callback(e.message, null);
+			return callback(e.message, null, null);
 		}
 
 		var now = new Date();
@@ -21,10 +25,10 @@ module.exports = function(exturl, callback) {
 			//console.log(item.begin + " -- " + nowStr + " -- " + item.end);
 			if (item.begin <= nowStr && nowStr < item.end) {
 				//console.log(iit + " ==> " + JSON.stringify(item));
-				return callback(null, item["speaker"] + " - " + item["titre"]);
+				return callback(null, item["speaker"] + " - " + item["titre"], corsEnabled);
 			}
 		}
 
-		return callback("program not found", null);
+		return callback("program not found", null, null);
 	});
 }

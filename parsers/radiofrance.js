@@ -1,11 +1,15 @@
 var get = require("./get.js");
 
 module.exports = function(exturl, callback) {
-	get(exturl, function(err, result) {
+	get(exturl, function(err, result, corsEnabled) {
+		if (err) {
+			return callback(err, null, null);
+		}
+		
 		try {
 			parsedResult = JSON.parse(result);
 		} catch(e) {
-			return callback(e.message, null);
+			return callback(e.message, null, null);
 		}
 
 		var now = Math.floor(new Date() / 1000);
@@ -13,14 +17,14 @@ module.exports = function(exturl, callback) {
 			var item = parsedResult[ip];
 			if (now >= item.start && now < item.end) {
 				if (item["conceptParentTitle"]) {
-					return callback(null, item["conceptParentTitle"] + " - " + item["conceptTitle"]);
+					return callback(null, item["conceptParentTitle"] + " - " + item["conceptTitle"], corsEnabled);
 				} else if (item["expressionTitle"]) {
-					return callback(null, item["conceptTitle"] + " - " + item["expressionTitle"]);
+					return callback(null, item["conceptTitle"] + " - " + item["expressionTitle"], corsEnabled);
 				} else {
-					return callback(null, item["conceptTitle"]);
+					return callback(null, item["conceptTitle"], corsEnabled);
 				}
 			}
 		}
-		return callback("program not found", null);
+		return callback("program not found", null, null);
 	});
 }
