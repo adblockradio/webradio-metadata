@@ -2,16 +2,11 @@ var get = require("./get.js");
 
 module.exports = function(exturl, callback) {
 	get(exturl, function(err, result, corsEnabled) {
-		if (err) {
-			return callback(err, null, null);
-		}
-
 		try {
 			parsedResult = JSON.parse(result);
-			var curTrack = parsedResult["currentTrack"];
 		} catch(e) {
 			return callback(e.message, null, null);
 		}
-		return callback(null, { artist:curTrack["artist"], title:curTrack["title"], cover: "https://nova.fr" + curTrack["image"] }, corsEnabled);
+		return callback(null, { artist: parsedResult["title"], title: parsedResult["baseline"], cover: parsedResult["imgPath"] }, corsEnabled);
 	});
 }

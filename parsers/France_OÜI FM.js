@@ -8,10 +8,10 @@ module.exports = function(exturl, callback) {
 
 		try {
 			parsedResult = JSON.parse(result);
-			var curTrack = parsedResult["currentTrack"];
+			var curTrack = parsedResult["laradiodelamer"]["0"];
 		} catch(e) {
 			return callback(e.message, null, null);
 		}
-		return callback(null, { artist:curTrack["artist"], title:curTrack["title"], cover: "https://nova.fr" + curTrack["image"] }, corsEnabled);
+		return callback(null, { artist: curTrack["artist"], title: curTrack["title"], cover: curTrack["img"] }, corsEnabled);
 	});
 }

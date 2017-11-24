@@ -5,7 +5,7 @@ module.exports = function(exturl, callback) {
 		if (err) {
 			return callback(err, null, null);
 		}
-		
+
 		try {
 			parsedResult = JSON.parse(result.slice(8));	// remove "var cnt=" at the beginning
 		} catch(e) {
@@ -25,7 +25,7 @@ module.exports = function(exturl, callback) {
 			//console.log(item.begin + " -- " + nowStr + " -- " + item.end);
 			if (item.begin <= nowStr && nowStr < item.end) {
 				//console.log(iit + " ==> " + JSON.stringify(item));
-				return callback(null, item["speaker"] + " - " + item["titre"], corsEnabled);
+				return callback(null, { artist: item["speaker"], title: item["titre"], cover: item["image"] }, corsEnabled);
 			}
 		}
 

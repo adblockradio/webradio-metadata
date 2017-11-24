@@ -39,13 +39,13 @@ module.exports = function(exturl, callback) {
 		}
 
 		//console.log(r2s[currentBlock]);
-		var b4 = "<a href=\"#\" class=\"program__grid__line__right__title\">";
+		var b4 = "class=\"program__grid__line__right__title\">";
 		var b5 = "</a>";
 		var i4 = r2s[currentBlock].indexOf(b4);
 		var r3 = r2s[currentBlock].slice(i4+b4.length);
 		var i5 = r3.indexOf(b5);
 		var meta2 = r3.slice(0, i5).trim(); // title of the precise current program
 
-		return callback(null, meta1 + " - " + meta2, corsEnabled);
+		return callback(null, { artist: meta1, title: meta2 }, corsEnabled);
 	});
 }
