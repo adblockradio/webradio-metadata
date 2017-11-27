@@ -1,3 +1,7 @@
+// Copyright (c) 2017 Alexandre Storelli
+// This file is licensed under the Affero General Public License version 3 or later.
+// See the LICENSE file.
+
 let urls = require("./urls.js");
 
 var LOG_ERRORS = false;

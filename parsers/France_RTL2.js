@@ -1,3 +1,7 @@
+// Copyright (c) 2017 Alexandre Storelli
+// This file is licensed under the Affero General Public License version 3 or later.
+// See the LICENSE file.
+
 var get = require("./get.js");
 var htmlToStr = require("./htmlToStr.js");
 

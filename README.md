@@ -29,5 +29,5 @@ To get metadata for all supported radios. Outputs a JSON.
 ## Usage as a module
 A demo server and a React webapp are available in `test-server/`
 
-## Licence
-AGPL v3.0
+## License
+See LICENSE file

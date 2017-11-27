@@ -1,7 +1,7 @@
+// Copyright (c) 2017 Alexandre Storelli
+// This file is licensed under the Affero General Public License version 3 or later.
+// See the LICENSE file.
+
 module.exports = function(str) {
 	return str.replace(/&#039;/g, "’").replace(/&amp;/g, '&').trim();
 }
-
-/*var cleanMeta = function(meta) {
-	return meta.replace(/\+/g, " ").replace(/-/g, "").replace(/  +/g, " ").replace(/\[ \]/g, " ").replace(/"/g, "");
-}*/

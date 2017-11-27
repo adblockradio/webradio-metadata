@@ -17,6 +17,6 @@ If not done automatically, open in your browser the url:
 
 ![Snapshot](web-interface.png)
 
-## Licence
+## License
 
-See root licence of this repository
+See root license of this repository
