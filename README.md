@@ -75,5 +75,50 @@ This project uses Node.JS scripts and a JS web interface. Note the Node scripts 
 * France - TSF Jazz
 * France - Virgin Radio
 
+## Contributing
+You are welcome to submit a PR to add a new recipe for a radio or to fix a current recipe.
+Two strategies have been used to write the recipes:
+* parsing a JSON/XML API used by the radio website to dynamically update the page contents.
+* brute parsing the live webpage contents when the API is not available.
+
+When you have identified how to extract the data, you need to have a look at two files:
+1) ```urls.js```
+
+Example syntax:
+```javascript
+[
+  {
+    country: "France",
+    radios: [
+      ...
+      { "name": "Fun Radio", "url": "http://www.funradio.fr/direct", "parser": "France_RTL2" },
+      ...
+```
+The ```name``` field should match the corresponding entry in the [radio browser wiki](http://www.radio-browser.info/gui/#/).
+The ```parser``` field is optional. If present, it tells the program to use the script for another radio, when the syntax for the other radio is the same.
+
+2) ```parsers/*.js```
+Please name new parser files with the following syntax: ```country_name.js```, with ```country``` and ```name``` matching the values in ```urls.js```. 
+
+Sample:
+```javascript
+var get = require("./get.js");
+
+module.exports = function(exturl, callback) {
+  get(exturl, function(err, result, corsEnabled) {
+    if (err) {
+      return callback(err, null, null);
+    }
+    
+    // ??? the magic happens here
+    // var artist =
+    // var title =
+    // var cover =
+    
+    return callback(null, { artist: artist, title: title, cover: cover }, corsEnabled);
+  });
+}
+```
+
 ## License
 See LICENSE file
