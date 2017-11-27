@@ -9,6 +9,7 @@ var update = function() {
 	});
 }
 console.log("please wait while metadata is being downloaded and parsed...");
+console.log("metadata will be available as a JSON at http://localhost:3001/metadata")
 update();
 
 // Serve metadata to clients.
@@ -17,7 +18,6 @@ var express = require('express');
 var helmet = require('helmet');
 var app = express();
 app.use(helmet());
-app.use('/', express.static('res/'));
 app.get('/metadata', function(req, res) {
 	res.set({ 'Access-Control-Allow-Origin': '*' });
 	res.json(metadata);
