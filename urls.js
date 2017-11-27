@@ -8,6 +8,8 @@ module.exports = [
 			{ "name": "Europe 1", "url": "http://cdn1-europe1.new2.ladmedia.fr/var/europe1/storage/diffusions_europe1.js" },
 			{ "name": "FIP", "url": "http://www.fipradio.fr/livemeta/7" },
 			{ "name": "France Info", "url": "https://www.francetvinfo.fr/replay-radio/grille-des-emissions/" },
+			{ "name": "France Inter", "url": "https://www.franceinter.fr/programmes?xmlHttpRequest=1&ignoreGridHour=1" },
+			{ "name": "France Musique",	"url": "https://www.francemusique.fr/programmes?xmlHttpRequest=1" },
 			{ "name": "Fun Radio", "url": "http://www.funradio.fr/direct", "parser": "France_RTL2" },
 			{ "name": "Jazz Radio", "url": "http://www.jazzradio.fr/winradio/live.xml" },
 			{ "name": "NRJ", "url": "http://www.nrj.fr/" },
@@ -23,10 +25,6 @@ module.exports = [
 			{ "name": "Skyrock", "url": "http://skyrock.fm/api/v3/player/onair" },
 			{ "name": "TSF Jazz", "url": "http://www.tsfjazz.com/getSongInformations.php" },
 			{ "name": "Virgin Radio", "url": "https://www.virginradio.fr/radio/api/get_all_events.json/argv/id_radio/2/start/" },
-
-			{ "name": "France Inter", "url": "https://www.franceinter.fr/programmes?xmlHttpRequest=1&ignoreGridHour=1" },
-			{ "name": "France Musique",	"url": "https://www.francemusique.fr/programmes?xmlHttpRequest=1", "parser": "radiofrance" },
-
 		]
 	}
 ]
