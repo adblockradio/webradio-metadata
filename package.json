@@ -1,6 +1,6 @@
 {
 	"name": "webradio-metadata",
-	"version": "0.1.1",
+	"version": "0.1.2",
 	"description": "API knowledge base to get metadata of radio streams",
 	"main": "getStreamMetadata.js",
 	"scripts": {
@@ -19,7 +19,7 @@
 		"xml2js": "^0.4.19"
 	},
 	"bugs": {
-		"url": "https://github.com/dest4/stream-audio-fingerprint/issues"
+		"url": "https://github.com/dest4/webradio-metadata/issues"
 	},
-	"homepage": "https://github.com/dest4/stream-audio-fingerprint"
+	"homepage": "https://github.com/dest4/webradio-metadata"
 }

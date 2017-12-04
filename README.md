@@ -5,7 +5,7 @@ Collection of urls and parsing scripts to fetch metadata about what is being bro
 
 ## Installation
 ```sh
-npm install
+npm install webradio-metadata
 ```
 
 ## Command-line usage
@@ -40,8 +40,8 @@ nodejs getStreamMetadata.js all
 
 ## Usage as a module
 ```nodejs
-require("./getStreamMetadata.js").getMeta(country, name, function(errors, parsedData, corsEnabled) { ... });
-require("./getStreamMetadata.js").getAll(function(results) { ... });
+require("webradio-metadata").getMeta(country, name, function(errors, parsedData, corsEnabled) { ... });
+require("webradio-metadata").getAll(function(results) { ... });
 ```
 ## Demo webserver
 A demo server and a React webapp are available in `test-server/`
@@ -98,7 +98,7 @@ The ```name``` field should match the corresponding entry in the [radio browser 
 The ```parser``` field is optional. If present, it tells the program to use the script for another radio, when the syntax for the other radio is the same.
 
 2) ```parsers/*.js```
-Please name new parser files with the following syntax: ```country_name.js```, with ```country``` and ```name``` matching the values in ```urls.js```. 
+Please name new parser files with the following syntax: ```country_name.js```, with ```country``` and ```name``` matching the values in ```urls.js```.
 
 Sample:
 ```javascript
@@ -109,12 +109,12 @@ module.exports = function(exturl, callback) {
     if (err) {
       return callback(err, null, null);
     }
-    
+
     // ??? the magic happens here
     // var artist =
     // var title =
     // var cover =
-    
+
     return callback(null, { artist: artist, title: title, cover: cover }, corsEnabled);
   });
 }
