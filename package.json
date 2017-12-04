@@ -1,20 +1,25 @@
 {
-  "name": "webradio-metadata",
-  "version": "0.1.0",
-  "description": "API knowledge base to get metadata of radio streams",
-  "main": "getStreamMetadata.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "Alexandre Storelli",
-  "license": "AGPL-3.0",
-  "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-preset-env": "^1.6.1"
-  },
-  "dependencies": {
-    "express": "^4.16.2",
-    "helmet": "^3.9.0",
-    "xml2js": "^0.4.19"
-  }
+	"name": "webradio-metadata",
+	"version": "0.1.1",
+	"description": "API knowledge base to get metadata of radio streams",
+	"main": "getStreamMetadata.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"author": "Alexandre Storelli",
+	"keywords": [
+    	"scraping",
+    	"metadata",
+		"webradio"
+    ],
+	"license": "AGPL-3.0",
+	"dependencies": {
+		"express": "^4.16.2",
+		"helmet": "^3.9.0",
+		"xml2js": "^0.4.19"
+	},
+	"bugs": {
+		"url": "https://github.com/dest4/stream-audio-fingerprint/issues"
+	},
+	"homepage": "https://github.com/dest4/stream-audio-fingerprint"
 }

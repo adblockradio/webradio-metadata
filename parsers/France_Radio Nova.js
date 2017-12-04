@@ -13,10 +13,17 @@ module.exports = function(exturl, callback) {
 		try {
 			parsedResult = JSON.parse(result);
 			var curTrack = parsedResult["currentTrack"];
-			var artist = curTrack["artist"];
-			var title = curTrack["title"];
-			var cover = "https://nova.fr" + curTrack["image"];
+			if (curTrack) {
+				var artist = curTrack["artist"];
+				var title = curTrack["title"];
+				var cover = "https://nova.fr" + curTrack["image"];
+			} else {
+				var artist = parsedResult["radio"]["name"];
+				var title = parsedResult["curShow"]["title"];
+				var cover = "https://nova.fr" + parsedResult["radio"]["image"];
+			}
 		} catch(e) {
+			console.log(JSON.stringify(parsedResult));
 			return callback(e.message, null, null);
 		}
 		return callback(null, { artist: artist, title: title, cover: cover }, corsEnabled);
