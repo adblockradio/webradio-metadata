@@ -19,7 +19,7 @@ module.exports = function(exturl, callback) {
 				var cover = "https://nova.fr" + curTrack["image"];
 			} else {
 				var artist = parsedResult["radio"]["name"];
-				var title = parsedResult["currentShow"]["title"];
+				var title = parsedResult["currentShow"] ? parsedResult["currentShow"]["title"] : "";
 				var cover = "https://nova.fr" + parsedResult["radio"]["image"];
 			}
 		} catch(e) {
