@@ -23,7 +23,7 @@ exports.getMeta = getMeta = function(country, name, callback) {
 			}
 		}
 	}
-	return callback("radio not found", null, null);
+	return callback("radio " + country + "_" + name + " not found", null, null);
 }
 
 exports.getAll = getAll = function(callback) {

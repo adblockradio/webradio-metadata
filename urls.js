@@ -23,6 +23,7 @@ module.exports = [
 			{ "name": "Radio Meuh", "url": "http://player.radiomeuh.com/rtdata/tracks.json" },
 			{ "name": "Radio Nova",	"url": "https://www.nova.fr/radio/19577/player" },
 			{ "name": "Rire et Chansons", "url": "http://www.rireetchansons.fr/webradios" },
+			{ "name": "RFM", "url": "http://directradio.rfm.fr/rfm/now/3" },
 			{ "name": "RMC", "url": "http://bfmbusiness.bfmtv.com/current-emission/1", "parser": "France_BFM Business" },
 			{ "name": "RTL", "url": "http://www.rtl.fr/direct" },
 			{ "name": "RTL2", "url": "http://www.rtl2.fr/direct/timeline" },
