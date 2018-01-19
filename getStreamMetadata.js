@@ -26,14 +26,18 @@ exports.getMeta = getMeta = function(country, name, callback) {
 	return callback("radio " + country + "_" + name + " not found", null, null);
 }
 
-exports.getAll = getAll = function(callback) {
-	var jobs = [];
+exports.getAvailable = getAvailable = function() {
+	var list = [];
 	for (let i=0; i<urls.length; i++) {
 		for (let j=0; j<urls[i].radios.length; j++) {	// loop on radios
-			jobs.push({ country: urls[i].country, name: urls[i].radios[j].name });
+			list.push({ country: urls[i].country, name: urls[i].radios[j].name });
 		}
 	}
+	return list;
+}
 
+exports.getAll = getAll = function(callback) {
+	var jobs = getAvailable();
 	var f = function(ijob) {
 		if (ijob >= jobs.length) return callback(jobs);
 		getMeta(jobs[ijob].country, jobs[ijob].name, function(err, data, corsEnabled) {
