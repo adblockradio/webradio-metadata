@@ -3,6 +3,7 @@
 // See the LICENSE file.
 
 var get = require("./get.js");
+let log = require("../log.js")("meta");
 
 module.exports = function(exturl, callback) {
 	get(exturl, function(err, result, corsEnabled) {
@@ -23,7 +24,7 @@ module.exports = function(exturl, callback) {
 				var cover = "https://nova.fr" + parsedResult["radio"]["image"];
 			}
 		} catch(e) {
-			console.log(JSON.stringify(parsedResult));
+			log.warn("France_Radio Nova: parsedResult=" + JSON.stringify(parsedResult));
 			return callback(e.message, null, null);
 		}
 		return callback(null, { artist: artist, title: title, cover: cover }, corsEnabled);

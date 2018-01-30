@@ -3,6 +3,7 @@
 // See the LICENSE file.
 
 var get = require("./get.js");
+let log = require("../log.js")("meta");
 
 module.exports = function(exturl, callback) {
 	get(exturl, function(err, result, corsEnabled) {
@@ -38,7 +39,7 @@ module.exports = function(exturl, callback) {
 		}
 
 		if (currentBlock < 0) {
-			console.log("warning, could not get subline title");
+			log.warn("France_France Info: warning, could not get subline title");
 			return callback(null, meta1, corsEnabled);
 		}
 

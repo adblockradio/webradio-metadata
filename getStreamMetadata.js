@@ -3,6 +3,7 @@
 // See the LICENSE file.
 
 let urls = require("./urls.js");
+let log = require("./log.js")("meta");
 
 var LOG_ERRORS = false;
 
@@ -46,7 +47,7 @@ exports.getAll = getAll = function(callback) {
 				data: data,
 				corsEnabled: corsEnabled
 			});
-			if (LOG_ERRORS && err) console.log(jobs[ijob].country + "_" + jobs[ijob].name + " : error=" + err);
+			if (LOG_ERRORS && err) log.warn(jobs[ijob].country + "_" + jobs[ijob].name + " : error=" + err);
 			f(ijob+1, callback);
 		});
 	}
@@ -57,22 +58,22 @@ exports.getAll = getAll = function(callback) {
 
 if (process.argv.length >= 3 && process.argv[1].slice(-20) == "getStreamMetadata.js") { // standalone usage
 	if (process.argv[2] == "list") {				// loop on countries
-		console.log("list of available parsing recipes:");
+		log.info("list of available parsing recipes:");
 		for (let i=0; i<urls.length; i++) {
 			for (let j=0; j<urls[i].radios.length; j++) {	// loop on radios
-				console.log(urls[i].country + " - " + urls[i].radios[j].name);
+				log.info(urls[i].country + " - " + urls[i].radios[j].name);
 			}
 		}
 		return
 	} else if (process.argv[2] == "all" || process.argv[2] == "test") {
 		LOG_ERRORS = process.argv[2] == "test";
 		getAll(function(jobs) {
-			if (process.argv[2] == "all") console.log(JSON.stringify(jobs));
+			if (process.argv[2] == "all") log.info(JSON.stringify(jobs));
 		});
 
 	} else if (process.argv.length >= 4) {
 		getMeta(process.argv[2], process.argv[3], function(err, data, corsEnabled) {
-			console.log(JSON.stringify({ err: err, data: data, corsEnabled: corsEnabled }));
+			log.info(JSON.stringify({ err: err, data: data, corsEnabled: corsEnabled }));
 		});
 	}
 
