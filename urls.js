@@ -21,7 +21,7 @@ module.exports = [
 			{ "name": "Radio Classique", "url": "https://d3gf3bsqck8svl.cloudfront.net/direct-metadata/current.json" },
 			{ "name": "Radio FG", "url": "https://www.radiofg.com/cache/titreplayer10" },
 			{ "name": "Radio Meuh", "url": "http://player.radiomeuh.com/rtdata/tracks.json" },
-			{ "name": "Radio Nova",	"url": "https://www.nova.fr/radio/19577/player" },
+			{ "name": "Radio Nova",	"url": "http://www.nova.fr/radio/19577/player" },
 			{ "name": "Rire et Chansons", "url": "http://www.rireetchansons.fr/webradios" },
 			{ "name": "RFM", "url": "http://directradio.rfm.fr/rfm/now/3" },
 			{ "name": "RMC", "url": "http://bfmbusiness.bfmtv.com/current-emission/1", "parser": "France_BFM Business" },
