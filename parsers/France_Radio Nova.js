@@ -11,17 +11,20 @@ module.exports = function(exturl, callback) {
 			return callback(err, null, null);
 		}
 
+		var isHTTPS = exturl.slice(0,6) == "https";
+		var coverPrefix = isHTTPS ? "https://nova.fr" : "http://nova.fr";
+
 		try {
 			parsedResult = JSON.parse(result);
 			var curTrack = parsedResult["currentTrack"];
 			if (curTrack) {
 				var artist = curTrack["artist"];
 				var title = curTrack["title"];
-				var cover = "https://nova.fr" + curTrack["image"];
+				var cover = coverPrefix + curTrack["image"];
 			} else {
 				var artist = parsedResult["radio"]["name"];
 				var title = parsedResult["currentShow"] ? parsedResult["currentShow"]["title"] : "";
-				var cover = "https://nova.fr" + parsedResult["radio"]["image"];
+				var cover = coverPrefix + parsedResult["radio"]["image"];
 			}
 		} catch(e) {
 			log.warn("France_Radio Nova: parsedResult=" + JSON.stringify(parsedResult));

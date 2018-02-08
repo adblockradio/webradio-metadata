@@ -5,7 +5,7 @@
 var get = require("./get.js");
 
 module.exports = function(exturl, callback) {
-	get(exturl, function(err, result, corsEnabled) {
+	get(exturl, function(err, result, corsEnabled) { // add ?cc=YYYYMD ?
 		if (err) {
 			return callback(err, null, null);
 		}
