@@ -5,7 +5,8 @@
 var get = require("./get.js");
 
 module.exports = function(exturl, callback) {
-	get(exturl, function(err, result, corsEnabled) { // add ?cc=YYYYMD ?
+	var now = new Date();
+	get(exturl + "?cc=" + now.getFullYear() + now.getMonth() + now.getDate(), function(err, result, corsEnabled) {
 		if (err) {
 			return callback(err, null, null);
 		}

@@ -6,7 +6,7 @@ var get = require("./get.js");
 var htmlToStr = require("./htmlToStr.js");
 
 module.exports = function(exturl, callback) {
-	get(exturl, function(err, result, corsEnabled) {
+	get(exturl + "?after=" + (+new Date() - 60*60000), function(err, result, corsEnabled) {
 
 		if (err) {
 			return callback(err, null, null);

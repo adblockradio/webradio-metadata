@@ -20,15 +20,23 @@ module.exports = function(exturl, callback) {
 		for (ip = 0; ip<parsedResult.length; ip++) {
 			var item = parsedResult[ip];
 			if (now >= item.start && now < item.end) {
+				var artist = null;
 				if (item["conceptParentTitle"]) {
-					return callback(null, item["conceptParentTitle"] + " - " + item["conceptTitle"], corsEnabled);
-				} else if (item["expressionTitle"]) {
-					return callback(null, item["conceptTitle"] + " - " + item["expressionTitle"], corsEnabled);
-				} else {
-					return callback(null, item["conceptTitle"], corsEnabled);
+					artist = item["conceptParentTitle"];
 				}
+				var title = item["conceptTitle"];
+				if (title.indexOf(item["expressionTitle"]) < 0 && item["expressionTitle"].indexOf(title) < 0) {
+					if (artist == null) {
+						artist = title;
+						title = item["expressionTitle"];
+					} else {
+						title += " - " + item["expressionTitle"];
+					}
+				}
+				var cover = (item["visual"] && item["visual"]["imgUrl"]) ? item["visual"]["imgUrl"] : null;
+				return callback(null, { artist: artist, title: title, cover: cover }, corsEnabled);
 			}
 		}
-		return callback("program not found", null, null);
+		return callback("program not found at time stamp " + now, null, null);
 	});
 }

@@ -16,11 +16,11 @@ module.exports = function(exturl, callback) {
 		var i0 = result.indexOf(b0);
 		var r1 = result.slice(i0+b0.length); //.replace(/\n/g, '');
 
-		var b9 = "<img src=\"";
+		var b9 = "data-src=\"";
 		var i9 = r1.indexOf(b9);
 		var r9 = r1.slice(i9+b9.length);
 		var b91 = "\"";
-		var i91 = r1.indexOf(b91);
+		var i91 = r9.indexOf(b91);
 		var cover = r9.slice(0, i91);
 
 		var b1 = "<span class=\"title\">";
