@@ -7,6 +7,10 @@ let log = require("./log.js")("meta");
 
 var LOG_ERRORS = false;
 
+exports.setLog = function(customLogger) {
+	log = customLogger || log;
+}
+
 exports.getMeta = getMeta = function(country, name, callback) {
 	for (let i=0; i<urls.length; i++) {				// loop on countries
 		if (urls[i].country === country) {
