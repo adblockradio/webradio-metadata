@@ -17,9 +17,9 @@ module.exports = function(exturl, callback) {
 		}
 
 		var now = Math.floor(new Date() / 1000);
-		for (ip = 0; ip<parsedResult.length; ip++) {
+		for (ip = parsedResult.length - 1; ip >= 0; ip--) {
 			var item = parsedResult[ip];
-			if (now >= item.start && now < item.end) {
+			if (now < item.end && (now >= item.start || (ip > 0 && now >= parsedResult[ip-1].end))) {
 				var artist = null;
 				if (item["conceptParentTitle"]) {
 					artist = item["conceptParentTitle"];
@@ -37,6 +37,10 @@ module.exports = function(exturl, callback) {
 				return callback(null, { artist: artist, title: title, cover: cover }, corsEnabled);
 			}
 		}
+		/*for (ip = 0; ip<parsedResult.length; ip++) {
+			var item = parsedResult[ip];
+			console.log("item.start=" + item.start + " item.end=" + item.end);
+		}*/
 		return callback("program not found at time stamp " + now, null, null);
 	});
 }
