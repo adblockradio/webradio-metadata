@@ -72,7 +72,7 @@ if (process.argv.length >= 3 && process.argv[1].slice(-20) == "getStreamMetadata
 	} else if (process.argv[2] == "all-human" || process.argv[2] == "test") {
 		LOG_ERRORS = process.argv[2] == "test";
 		getAll(function(jobs) {
-			if (process.argv[2] == "all") { //log.info(JSON.stringify(jobs));
+			if (process.argv[2] == "all-human") { //log.info(JSON.stringify(jobs));
 				for (let i=0; i<jobs.length; i++) {
 					if (jobs[i].err) {
 						log.warn(jobs[i].country + "_" + jobs[i].name + " error=" + jobs[i].err);
