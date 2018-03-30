@@ -69,7 +69,7 @@ if (process.argv.length >= 3 && process.argv[1].slice(-20) == "getStreamMetadata
 			}
 		}
 		return
-	} else if (process.argv[2] == "all" || process.argv[2] == "test") {
+	} else if (process.argv[2] == "all-human" || process.argv[2] == "test") {
 		LOG_ERRORS = process.argv[2] == "test";
 		getAll(function(jobs) {
 			if (process.argv[2] == "all") { //log.info(JSON.stringify(jobs));
@@ -82,7 +82,10 @@ if (process.argv.length >= 3 && process.argv[1].slice(-20) == "getStreamMetadata
 				}
 			}
 		});
-
+	} else if (process.argv[2] == "all-json") {
+		getAll(function(jobs) {
+			console.log(JSON.stringify(jobs));
+		});
 	} else if (process.argv.length >= 4) {
 		getMeta(process.argv[2], process.argv[3], function(err, data, corsEnabled) {
 			log.info(JSON.stringify({ err: err, data: data, corsEnabled: corsEnabled }));

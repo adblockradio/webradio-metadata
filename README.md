@@ -2,6 +2,7 @@ Collection of urls and parsing scripts to fetch metadata about what is being bro
 * an artist
 * a title
 * a cover image (if available)
+* a CORS flag indicating, if true, that the script can scrape cross-domain in a browser.
 
 ## Installation
 ```sh
@@ -33,9 +34,14 @@ $ nodejs getStreamMetadata.js "France" "Radio Nova"
 {"err":null,"data":{"artist":"AL GREEN","title":"LET'S STAY TOGETHER","cover":"https://nova.fr/sites/default/files/CQCT/2017-07/al-green-lets-stay-together-2893.jpeg"},"corsEnabled":true}
 ```
 
-* To get metadata for all supported radios. Outputs a JSON.
+* To get metadata for all supported radios.
+- Output in JSON:
 ```sh
-nodejs getStreamMetadata.js all
+nodejs getStreamMetadata.js all-json
+```
+- Output in human readable format:
+```sh
+nodejs getStreamMetadata.js all-human
 ```
 
 ## Usage as a module
@@ -53,14 +59,17 @@ This project uses Node.JS scripts and a JS web interface. Note the Node scripts 
 ## Compatible webradios
 * France - Alouette
 * France - BFM Business
+* France - Chérie
 * France - Djam Radio
 * France - Europe 1
 * France - FIP
+* France - France Culture
 * France - France Info
 * France - France Inter
 * France - France Musique
 * France - Fun Radio
 * France - Jazz Radio
+* France - M Radio
 * France - NRJ
 * France - OÜI FM
 * France - Radio Classique
@@ -74,6 +83,7 @@ This project uses Node.JS scripts and a JS web interface. Note the Node scripts 
 * France - Skyrock
 * France - TSF Jazz
 * France - Virgin Radio
+* France - Voltage
 
 ## Contributing
 You are welcome to submit a PR to add a new recipe for a radio or to fix a current recipe.

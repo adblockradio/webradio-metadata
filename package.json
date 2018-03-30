@@ -1,6 +1,6 @@
 {
 	"name": "webradio-metadata",
-	"version": "0.1.12",
+	"version": "0.1.13",
 	"description": "API knowledge base to get metadata of radio streams",
 	"main": "getStreamMetadata.js",
 	"scripts": {
