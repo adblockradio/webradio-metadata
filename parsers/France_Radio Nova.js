@@ -3,7 +3,7 @@
 // See the LICENSE file.
 
 var get = require("./get.js");
-let log = require("../log.js")("meta");
+let log = require("abr-log")("meta");
 
 module.exports = function(exturl, callback) {
 	get(exturl, function(err, result, corsEnabled) {

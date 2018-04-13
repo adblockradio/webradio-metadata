@@ -1,6 +1,6 @@
 {
 	"name": "webradio-metadata",
-	"version": "0.1.15",
+	"version": "0.1.16",
 	"description": "API knowledge base to get metadata of radio streams",
 	"main": "getStreamMetadata.js",
 	"scripts": {
@@ -14,6 +14,7 @@
 	],
 	"license": "AGPL-3.0",
 	"dependencies": {
+		"abr-log": "git+https://git@github.com/dest4/log.git",
 		"chalk": "^2.3.0",
 		"loglevel": "^1.6.1",
 		"loglevel-plugin-prefix": "^0.8.3",

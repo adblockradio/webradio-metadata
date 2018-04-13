@@ -3,7 +3,7 @@
 // See the LICENSE file.
 
 let urls = require("./urls.js");
-let log = require("./log.js")("meta");
+let log = require("abr-log")("meta");
 
 var LOG_ERRORS = false;
 
