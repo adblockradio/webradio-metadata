@@ -2,8 +2,8 @@
 // This file is licensed under the Affero General Public License version 3 or later.
 // See the LICENSE file.
 
-let urls = require("./urls.js");
-let log = require("abr-log")("meta");
+const urls = require("./urls.js");
+const { log } = require("abr-log")("meta");
 
 var LOG_ERRORS = false;
 
