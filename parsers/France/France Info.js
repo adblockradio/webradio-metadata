@@ -2,7 +2,7 @@
 // This file is licensed under the Affero General Public License version 3 or later.
 // See the LICENSE file.
 
-var get = require("./get.js");
+var get = require("../get.js");
 let log = require("abr-log")("meta");
 
 module.exports = function(exturl, callback) {

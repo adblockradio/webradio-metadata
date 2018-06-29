@@ -2,7 +2,7 @@
 // This file is licensed under the Affero General Public License version 3 or later.
 // See the LICENSE file.
 
-var get = require("./get.js");
+var get = require("../get.js");
 
 module.exports = function(exturl, callback) {
 	get(exturl, function(err, result, corsEnabled) {

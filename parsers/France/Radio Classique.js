@@ -2,7 +2,7 @@
 // This file is licensed under the Affero General Public License version 3 or later.
 // See the LICENSE file.
 
-var get = require("./get.js");
+var get = require("../get.js");
 
 module.exports = function(exturl, callback) {
 	get(exturl, function(err, result, corsEnabled) {
@@ -12,9 +12,14 @@ module.exports = function(exturl, callback) {
 
 		try {
 			parsedResult = JSON.parse(result);
+			var artist = parsedResult["auteur"].replace(/:/g, " ").trim();
+			var title = parsedResult["titre"].replace(/\%\\n/g, " ").trim(); //.replace(/\\n/g, " - ")
 		} catch(e) {
 			return callback(e.message, null, null);
 		}
-		return callback(null, { artist: parsedResult["artiste"], title: parsedResult["titre"], cover: parsedResult["image_url"] }, corsEnabled);
+		return callback(null, { arstist:artist, title:title }, corsEnabled);
+
+		// TODO
+		// to get cover, parse rc_composers list from https://www.radioclassique.fr/radio/direct/
 	});
 }

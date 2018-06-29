@@ -13,19 +13,19 @@ exports.setLog = function(customLogger) {
 
 exports.getMeta = getMeta = function(country, name, callback) {
 	for (let i=0; i<urls.length; i++) {				// loop on countries
-		if (urls[i].country === country) {
-			for (let j=0; j<urls[i].radios.length; j++) {	// loop on radios
-				if (urls[i].radios[j].name === name) {
-					if (!urls[i].radios[j].parser) urls[i].radios[j].parser = country + "_" + name;
-					return require("./parsers/" + urls[i].radios[j].parser + ".js")(urls[i].radios[j].url, function(error, parsedData, corsEnabled) {
-						if (error) {
-							return callback(error, null, corsEnabled);
-						} else {
-							return callback(null, parsedData, corsEnabled);
-						}
-					});
+		if (urls[i].country !== country) continue;
+
+		for (let j=0; j<urls[i].radios.length; j++) {	// loop on radios
+			if (urls[i].radios[j].name !== name) continue;
+
+			if (!urls[i].radios[j].parser) urls[i].radios[j].parser = country + "/" + name;
+			return require("./parsers/" + urls[i].radios[j].parser + ".js")(urls[i].radios[j].url, function(error, parsedData, corsEnabled) {
+				if (error) {
+					return callback(error, null, corsEnabled);
+				} else {
+					return callback(null, parsedData, corsEnabled);
 				}
-			}
+			});
 		}
 	}
 	return callback("radio " + country + "_" + name + " not found", null, null);

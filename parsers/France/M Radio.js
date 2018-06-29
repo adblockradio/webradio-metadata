@@ -3,7 +3,7 @@
 // See the LICENSE file.
 
 var parseString = require('xml2js').parseString;
-var get = require("./get.js");
+var get = require("../get.js");
 
 module.exports = function(exturl, callback) {
 	get(exturl + (+new Date()), function(err, result, corsEnabled) {

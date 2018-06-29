@@ -1,8 +1,8 @@
-// Copyright (c) 2017 Alexandre Storelli
+// Copyright (c) 2018 Alexandre Storelli
 // This file is licensed under the Affero General Public License version 3 or later.
 // See the LICENSE file.
 
-var get = require("./get.js");
+var get = require("../get.js");
 
 module.exports = function(exturl, callback) {
 	get(exturl, function(err, result, corsEnabled) {
@@ -12,10 +12,9 @@ module.exports = function(exturl, callback) {
 
 		try {
 			parsedResult = JSON.parse(result);
-			var curTrack = parsedResult["laradiodelamer"]["0"];
 		} catch(e) {
 			return callback(e.message, null, null);
 		}
-		return callback(null, { artist: curTrack["artist"], title: curTrack["title"], cover: curTrack["img"] }, corsEnabled);
+		return callback(null, { artist: parsedResult[0]["artist"]["name"], title: parsedResult[0]["title"], cover: null }, corsEnabled);
 	});
 }

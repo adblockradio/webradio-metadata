@@ -2,7 +2,7 @@
 // This file is licensed under the Affero General Public License version 3 or later.
 // See the LICENSE file.
 
-var get = require("./get.js");
+var get = require("../get.js");
 
 module.exports = function(exturl, callback) {
 	get(exturl, function(err, result, corsEnabled) {
@@ -12,17 +12,13 @@ module.exports = function(exturl, callback) {
 
 		try {
 			parsedResult = JSON.parse(result);
+			var curTrack = parsedResult["current"];
 		} catch(e) {
 			return callback(e.message, null, null);
 		}
-
-		var curTrack = parsedResult.steps[parsedResult.levels["0"].items[parsedResult.levels["0"].position]];
-		//console.log(curTrack);
-		if (!curTrack) {
-			return callback("parsing problem", parsedResult["radio"]["name"], corsEnabled);
-		} else {
-			return callback(null, { artist: curTrack["authors"], title: curTrack["title"], cover: curTrack["visual"] }, corsEnabled);
+		if (curTrack["artist"] && curTrack["artist"][curTrack["artist"].length-1] == "|") {
+			curTrack["artist"] = curTrack["artist"].slice(0, -1);
 		}
-
+		return callback(null, { artist: curTrack["artist"], title: curTrack["title"], cover: curTrack["cover"] }, corsEnabled);
 	});
 }

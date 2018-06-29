@@ -3,7 +3,7 @@
 // See the LICENSE file.
 
 var parseString = require('xml2js').parseString;
-var get = require("./get.js");
+var get = require("../get.js");
 
 module.exports = function(exturl, callback) {
 	get(exturl, function(err, result, corsEnabled) {
@@ -15,17 +15,8 @@ module.exports = function(exturl, callback) {
 			if (err) {
 				return callback(err, null, null);
 			}
-			var stations = ro.prog.station;
-			for (var i=0; i<stations.length; i++) {
-				try {
-					if (stations[i]["$"]["id"] == "0") {
-						//console.dir(stations[i]);
-						return callback(null, { artist: stations[i].morceau[0].chanteur[0], title: stations[i].morceau[0].chanson[0], cover: stations[i].morceau[0].pochette[0] }, corsEnabled);
-					}
-				} catch(e) {
-					return callback(e.message, null, null);
-				}
-			}
+
+			return callback(null, { artist: ro["NowPlaying"]["Current"][0]["Artist"][0], title: ro["NowPlaying"]["Current"][0]["Title"][0], cover: ro["NowPlaying"]["Current"][0]["Image"][0] });
 		});
 	});
 }
