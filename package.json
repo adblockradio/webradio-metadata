@@ -1,6 +1,6 @@
 {
 	"name": "webradio-metadata",
-	"version": "0.1.20",
+	"version": "0.1.21",
 	"description": "API knowledge base to get metadata of radio streams",
 	"main": "getStreamMetadata.js",
 	"scripts": {
@@ -19,6 +19,7 @@
 		"loglevel": "^1.6.1",
 		"loglevel-plugin-prefix": "^0.8.3",
 		"winston": "^3.0.0",
+		"ws": "^5.2.1",
 		"xml2js": "^0.4.19"
 	},
 	"bugs": {
