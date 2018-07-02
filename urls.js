@@ -4,6 +4,13 @@
 
 module.exports = [
 	{
+		country: "Belgium",
+		radios: [
+			{ name: "Bel-RTL", url: "https://www.radiocontact.be/json/epg24h_4.json" },
+			{ name: "MNM", url: "https://services.vrt.be/playlist/onair?channel_code=55" },
+		]
+	},
+	{
 		country: "France",
 		radios: [
 			{ name: "Alouette", url: "https://www.alouette.fr/player/onair.php" },
@@ -42,6 +49,7 @@ module.exports = [
 		country: "Germany",
 		radios: [
 			{ name: "bigFM Deutschland", url: "wss://ws.bigfm.de/" },
+			{ name: "Fritz", url: "https://www.fritz.de/include/frz/zeitstrahl/nowonair.json" },
 			{ name: "Jam FM", url: "https://webradio.jam.fm/services/program-info/live/jam/" },
 			{ name: "Klassik Radio", url: "http://www.klassikradio.de/index.php?option=com_ajax&Itemid=101&module=showdisplay&title=ShowDisplay&format=json" },
 			{ name: "Radio 7", url: "https://radio7-stream-service.loverad.io/v1/radio7?_=1530486845734" },
