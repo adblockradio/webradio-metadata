@@ -65,7 +65,7 @@ if (process.argv.length >= 3 && process.argv[1].slice(-20) == "getStreamMetadata
 		log.info("list of available parsing recipes:");
 		for (let i=0; i<urls.length; i++) {
 			for (let j=0; j<urls[i].radios.length; j++) {	// loop on radios
-				log.info(urls[i].country + " - " + urls[i].radios[j].name);
+				console.log("* " + urls[i].country + " - " + urls[i].radios[j].name);
 			}
 		}
 		return

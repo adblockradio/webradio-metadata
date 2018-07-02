@@ -70,26 +70,42 @@ This project uses Node.JS scripts and a JS web interface. Note the Node scripts 
 * France - Fun Radio
 * France - Jazz Radio
 * France - M Radio
+* France - Nostalgie
 * France - NRJ
 * France - OÜI FM
 * France - Radio Classique
 * France - Radio FG
 * France - Radio Meuh
 * France - Radio Nova
+* France - Radio Scoop Lyon
 * France - Rire et Chansons
+* France - RFM
 * France - RMC
 * France - RTL
 * France - RTL2
 * France - Skyrock
 * France - TSF Jazz
-* France - Virgin Radio
+* France - Virgin Radio France
 * France - Voltage
+* Germany - bigFM Deutschland
+* Germany - Jam FM
+* Germany - Klassik Radio
+* Germany - Radio 7
+* Germany - RTL Radio
+* Spain - Cadena 100
+* Spain - Cadena SER
+* Spain - RAC 1
+* Spain - Rock FM
+* Switzerland - RTS La Premiere
+* Switzerland - RTS Couleur 3
+* Switzerland - Spoon Radio
 
 ## Contributing
 You are welcome to submit a PR to add a new recipe for a radio or to fix a current recipe.
-Two strategies have been used to write the recipes:
-* parsing a JSON/XML API used by the radio website to dynamically update the page contents.
-* brute parsing the live webpage contents when the API is not available.
+Three strategies have been used to write the recipes:
+* parsing a JSON/XML API used by the radio website to dynamically update the page contents (GET or POST).
+* connecting through a websocket to receive metadata.
+* brute parsing the live webpage contents when no API is available.
 
 When you have identified how to extract the data, you need to have a look at two files:
 1) ```urls.js```
@@ -101,7 +117,7 @@ Example syntax:
     country: "France",
     radios: [
       ...
-      { "name": "Fun Radio", "url": "http://www.funradio.fr/direct", "parser": "France_RTL2" },
+      { name: "Fun Radio", url: "http://www.funradio.fr/direct", parser: "France_RTL2" },
       ...
 ```
 The ```name``` field should match the corresponding entry in the [radio browser wiki](http://www.radio-browser.info/gui/#/).
