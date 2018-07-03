@@ -47,7 +47,7 @@ module.exports = function(exturl, callback) {
 */
 		} else {
 			exec('curl "https://services.vrt.be/epg/onair?channel_code=55" -H "Accept: application/vnd.epg.vrt.be.onairs_1.0+json"', (error, stdout2, stderr2) => {
-				console.log(stdout2);
+				//console.log(stdout2);
 				try {
 					parsedResult = JSON.parse(stdout2);
 					parsedResult = parsedResult["onairs"][0]["now"];
@@ -56,7 +56,7 @@ module.exports = function(exturl, callback) {
 					return callback(e.message, null, null);
 				}
 
-				console.log(parsedResult);
+				//console.log(parsedResult);
 
 				const artist = parsedResult.presenters[0].name;
 				const title = parsedResult.title;
