@@ -44,7 +44,10 @@ exports.getAvailable = getAvailable = function() {
 exports.getAll = getAll = function(callback) {
 	var jobs = getAvailable();
 	var f = function(ijob) {
-		if (ijob >= jobs.length) return callback(jobs);
+		if (ijob >= jobs.length) {
+			if (callback) callback(jobs);
+			return;
+		}
 		getMeta(jobs[ijob].country, jobs[ijob].name, function(err, data, corsEnabled) {
 			Object.assign(jobs[ijob], {
 				err: err,
@@ -52,6 +55,13 @@ exports.getAll = getAll = function(callback) {
 				corsEnabled: corsEnabled
 			});
 			if (LOG_ERRORS && err) log.warn(jobs[ijob].country + "_" + jobs[ijob].name + " : error=" + err);
+			if (process.argv[2] == "all-human") { //log.info(JSON.stringify(jobs));
+				if (jobs[ijob].err) {
+					log.warn(jobs[ijob].country + "_" + jobs[ijob].name + " error=" + jobs[ijob].err);
+				} else {
+					log.info(jobs[ijob].country + "_" + jobs[ijob].name + " artist=" + jobs[ijob].data.artist + " title=" + jobs[ijob].data.title + " cover=" + jobs[ijob].data.cover);
+				}
+			}
 			f(ijob+1, callback);
 		});
 	}
@@ -71,17 +81,7 @@ if (process.argv.length >= 3 && process.argv[1].slice(-20) == "getStreamMetadata
 		return
 	} else if (process.argv[2] == "all-human" || process.argv[2] == "test") {
 		LOG_ERRORS = process.argv[2] == "test";
-		getAll(function(jobs) {
-			if (process.argv[2] == "all-human") { //log.info(JSON.stringify(jobs));
-				for (let i=0; i<jobs.length; i++) {
-					if (jobs[i].err) {
-						log.warn(jobs[i].country + "_" + jobs[i].name + " error=" + jobs[i].err);
-					} else {
-						log.info(jobs[i].country + "_" + jobs[i].name + " artist=" + jobs[i].data.artist + " title=" + jobs[i].data.title + " cover=" + jobs[i].data.cover);
-					}
-				}
-			}
-		});
+		getAll();
 	} else if (process.argv[2] == "all-json") {
 		getAll(function(jobs) {
 			console.log(JSON.stringify(jobs));

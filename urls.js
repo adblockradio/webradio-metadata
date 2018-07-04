@@ -61,6 +61,16 @@ module.exports = [
 		]
 	},
 	{
+		country: "Italy",
+		radios: [
+			{ name: "Radio 24", url: "http://www.radio24.ilsole24ore.com/api/onair" },
+			{ name: "Radio Capital", url: "https://www.capital.it/api/broadcast_airplay/?get=now" },
+			{ name: "Rai Radio 1", url: "https://www.raiplayradio.it/dl/palinsesti/oraInOndaRadio.json" },
+			{ name: "Rai Radio 2", url: "https://www.raiplayradio.it/dl/palinsesti/oraInOndaRadio.json" },
+			{ name: "Rai Radio 3", url: "https://www.raiplayradio.it/dl/palinsesti/oraInOndaRadio.json" },
+		]
+	},
+	{
 		country: "Spain",
 		radios: [
 			{ name: "Cadena 100", url: "http://bo.cope.webtv.flumotion.com/api/active?format=json&podId=76" },
@@ -75,6 +85,17 @@ module.exports = [
 			{ name: "RTS La Premiere", url: "https://www.rts.ch/play/radio/songlog/a9e7621504c6959e35c3ecbe7f6bed0446cdf8da", parser: "Switzerland/RTS Couleur 3" },
 			{ name: "RTS Couleur 3", url: "https://www.rts.ch/play/radio/songlog/8ceb28d9b3f1dd876d1df1780f908578cbefc3d7" },
 			{ name: "Spoon Radio", url: "http://www.spoonradio.com/playingnow.xml" },
+		]
+	},
+	{
+		country: "United Kingdom",
+		radios: [
+			{ name: "Absolute Radio", url: "https://absoluteradio.co.uk/" },
+			{ name: "BBC Radio 1", url: "https://www.bbc.co.uk/radio" },
+			{ name: "BBC Radio 2", url: "https://www.bbc.co.uk/radio" },
+			{ name: "BBC Radio 3", url: "https://www.bbc.co.uk/radio" },
+			{ name: "BBC Radio 4", url: "https://www.bbc.co.uk/radio" },
+			{ name: "Kiss UK", url: "https://planetradio.co.uk/kiss/player/" },
 		]
 	}
 ]

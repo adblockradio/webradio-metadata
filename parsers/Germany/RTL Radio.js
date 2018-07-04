@@ -14,12 +14,25 @@ module.exports = function(exturl, callback) {
 		const b2 = ")";
 
 		try {
-			parsedResult = JSON.parse(result.slice(b1.length, result.length - b2.length));
+			var r = result.slice(b1.length, result.length - b2.length);
+			parsedResult = JSON.parse(r)["results"]["196"];
 			//console.log(JSON.stringify(parsedResult, null, "\t"));
-			var curTrack = parsedResult["results"]["196"].filter(e => e.type === "PE_E")[0];
+
+			var curTrack = parsedResult.filter(e => e.type === "PE_E");
+			if (curTrack[0]) {
+				var artist = curTrack[0]["artistName"];
+				var title = curTrack[0]["name"];
+				var cover = curTrack[0]["imageUrl"];
+			} else {
+				var backup = parsedResult.filter(e => e.type === "SI")[0];
+				artist = "RTL";
+				title = "Deutschlands Hit-Radio";
+				cover = backup["imageUrl"];
+			}
 		} catch(e) {
+			console.log(r);
 			return callback(e.message, null, null);
 		}
-		return callback(null, { artist: curTrack["artistName"], title: curTrack["name"], cover: curTrack["imageUrl"] }, corsEnabled);
+		return callback(null, { artist: artist, title: title, cover: cover }, corsEnabled);
 	});
 }

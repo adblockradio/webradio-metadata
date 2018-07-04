@@ -21,7 +21,7 @@ module.exports = function(exturl, callback) {
 			return callback(e.message, null, null);
 		}
 
-		console.log(p);
+		//console.log(p);
 
 		const b1 = "</span><span>";
 		const i1 = p.indexOf(b1);
@@ -33,7 +33,7 @@ module.exports = function(exturl, callback) {
 		const t = [Number(time.slice(0, 2)), Number(time.slice(3, 5))];
 		const curt = [Number(curTime.slice(0, 2)), Number(curTime.slice(3, 5))];
 
-		if (60 * (curt[0] - t[0]) + curt[1] - curt[0] <= 10) {
+		if (60 * (curt[0] - t[0]) + curt[1] - t[1] <= 10) {
 			p = p.slice(5);
 			const i2 = p.indexOf(b1);
 			p = p.slice(0, i2);
@@ -41,6 +41,7 @@ module.exports = function(exturl, callback) {
 			var artist = split[0].trim();
 			var title = split[1].trim();
 		} else {
+			//console.log("curt=" + curt + " t=" + t + "D=" + (60 * (curt[0] - t[0]) + curt[1] - t[1]));
 			artist = "Zen FM";
 			title = "Chill, lounge & trendy grooves";
 		}

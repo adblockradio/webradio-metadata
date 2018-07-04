@@ -14,18 +14,20 @@ module.exports = function(exturl, callback) {
 		try {
 			parsedResult = JSON.parse(decodeURI(result))["onairs"];
 			//console.log(JSON.stringify(parsedResult, null, "\t"));
-			parsedResult = parsedResult.filter(e => e.onairType === "NOW");;
+			parsedResult = parsedResult.filter(e => e.onairType === "NOW");
 		} catch(e) {
 			return callback(e.message, null, null);
 		}
 
-		if (parsedResult.length) {
-			const p = parsedResult[0];
+		if (parsedResult.length && parsedResult[0]["properties"]) {
+			//console.log("music");
+			const p = parsedResult[0]["properties"];
 			const artist = p.filter(e => e.key === "ARTISTNAME")[0].value.trim();
 			const title = p.filter(e => e.key === "TITLE")[0].value.trim();
 			return callback(null, { artist: artist, title: title }, corsEnabled);
 
 		} else {
+			//console.log("no music");
 			get("https://services.vrt.be/epg/onair?channel_code=41&accept=" + encodeURIComponent("application/vnd.epg.vrt.be.onairs_1.0+json"), function(err, stdout, corsEnabled) {
 				try {
 					parsedResult = JSON.parse(stdout);

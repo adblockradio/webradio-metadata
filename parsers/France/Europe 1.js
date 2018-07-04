@@ -30,7 +30,7 @@ module.exports = function(exturl, callback) {
 			//console.log(item.begin + " -- " + nowStr + " -- " + item.end);
 			if (item.begin <= nowStr && nowStr < item.end) {
 				//console.log(iit + " ==> " + JSON.stringify(item));
-				return callback(null, { artist: item["speaker"], title: item["titre"], cover: item["image"] }, corsEnabled);
+				return callback(null, { artist: item["speaker"], title: item["titre"], cover: "https:" + item["image"] }, corsEnabled);
 			}
 		}
 

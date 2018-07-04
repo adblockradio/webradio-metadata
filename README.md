@@ -57,6 +57,12 @@ A demo server and a React webapp are available in `test-server/`
 This project uses Node.JS scripts and a JS web interface. Note the Node scripts cannot be put in the web interface, because some of the urls fetched do not have the CORS HTTP header ```Access-Control-Allow-Origin: *```. Ressource loading would be blocked by the browser. It might still work for the radios with the property ```corsEnabled: true``` in the results.
 
 ## Compatible webradios
+* Belgium - Bel-RTL
+* Belgium - MNM
+* Belgium - Radio 1
+* Belgium - Studio Brussel
+* Belgium - RTBF La Première
+* Belgium - Zen FM
 * France - Alouette
 * France - BFM Business
 * France - Chérie
@@ -88,10 +94,16 @@ This project uses Node.JS scripts and a JS web interface. Note the Node scripts 
 * France - Virgin Radio France
 * France - Voltage
 * Germany - bigFM Deutschland
+* Germany - Fritz
 * Germany - Jam FM
 * Germany - Klassik Radio
 * Germany - Radio 7
 * Germany - RTL Radio
+* Italy - Radio 24
+* Italy - Radio Capital
+* Italy - Rai Radio 1
+* Italy - Rai Radio 2
+* Italy - Rai Radio 3
 * Spain - Cadena 100
 * Spain - Cadena SER
 * Spain - RAC 1
@@ -99,6 +111,12 @@ This project uses Node.JS scripts and a JS web interface. Note the Node scripts 
 * Switzerland - RTS La Premiere
 * Switzerland - RTS Couleur 3
 * Switzerland - Spoon Radio
+* United Kingdom - Absolute Radio
+* United Kingdom - BBC Radio 1
+* United Kingdom - BBC Radio 2
+* United Kingdom - BBC Radio 3
+* United Kingdom - BBC Radio 4
+* United Kingdom - Kiss UK
 
 ## Contributing
 You are welcome to submit a PR to add a new recipe for a radio or to fix a current recipe.
