@@ -41,7 +41,7 @@ module.exports = [
 			{ name: "Rire et Chansons", url: "http://www.rireetchansons.fr/webradios" },
 			{ name: "RFM", url: "http://directradio.rfm.fr/rfm/now/3" },
 			{ name: "RMC", url: "https://bfmbusiness.bfmtv.com/current-emission/1", parser: "France/BFM Business" },
-			{ name: "RTL", url: "http://www.rtl.fr/direct/live-player-config.json" },
+			{ name: "RTL", url: "https://www.rtl.fr/direct/live-player-config.json" },
 			{ name: "RTL2", url: "https://www.rtl2.fr/direct" },
 			{ name: "Skyrock", url: "http://skyrock.fm/api/v3/player/onair" },
 			{ name: "TSF Jazz", url: "http://www.tsfjazz.com/getSongInformations.php" },

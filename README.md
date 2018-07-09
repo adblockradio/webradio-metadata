@@ -135,7 +135,7 @@ Example syntax:
     country: "France",
     radios: [
       ...
-      { name: "Fun Radio", url: "http://www.funradio.fr/direct", parser: "France_RTL2" },
+      { name: "Fun Radio", url: "http://www.funradio.fr/direct", parser: "France/RTL2" },
       ...
 ```
 The ```name``` field should match the corresponding entry in the [radio browser wiki](http://www.radio-browser.info/gui/#/).
