@@ -78,7 +78,6 @@ if (process.argv.length >= 3 && process.argv[1].slice(-20) == "getStreamMetadata
 				console.log("* " + urls[i].country + " - " + urls[i].radios[j].name);
 			}
 		}
-		return
 	} else if (process.argv[2] == "all-human" || process.argv[2] == "test") {
 		LOG_ERRORS = process.argv[2] == "test";
 		getAll();
