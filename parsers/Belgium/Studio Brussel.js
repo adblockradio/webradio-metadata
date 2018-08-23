@@ -36,7 +36,7 @@ module.exports = function(exturl, callback) {
 					console.log(stdout);
 					return callback(e.message, null, null);
 				}
-				console.log(JSON.stringify(parsedResult, null, "\t"));
+				//console.log(JSON.stringify(parsedResult, null, "\t"));
 				let artist, title;
 				if (!parsedResult.presenters.length) {
 					artist = parsedResult.title;

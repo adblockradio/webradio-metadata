@@ -3,7 +3,7 @@
 // See the LICENSE file.
 
 // Fetch and parse remote metadata
-var getAll = require("../getStreamMetadata.js").getAll;
+var getAll = require("../index.js").getAll;
 var metadata = [];
 var update = function() {
 	getAll(function(results) {
