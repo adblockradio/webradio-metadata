@@ -58,8 +58,14 @@ module.exports = function(exturl, callback) {
 
 				//console.log(parsedResult);
 
-				const artist = parsedResult.presenters[0].name;
-				const title = parsedResult.title;
+				let artist, title;
+				if (!parsedResult.presenters.length) {
+					artist = parsedResult.title;
+					title = parsedResult.shortDescription;
+				} else {
+					artist = parsedResult.presenters[0].name;
+					title = parsedResult.title;
+				}
 
 				return callback(null, { artist: artist, title: title }, true);
 

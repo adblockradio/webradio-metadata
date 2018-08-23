@@ -12,7 +12,7 @@ module.exports = function(exturl, callback) {
 		}
 
 		try {
-			parsedResult = JSON.parse(result.slice(8));	// remove "var cnt=" at the beginning
+			parsedResult = JSON.parse(result.slice(8)); // remove "var cnt=" at the beginning
 		} catch(e) {
 			return callback(e.message, null, null);
 		}
@@ -34,6 +34,6 @@ module.exports = function(exturl, callback) {
 			}
 		}
 
-		return callback("program not found", null, null);
+		return callback("Europe 1: program not found", null, null);
 	});
 }

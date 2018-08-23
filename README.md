@@ -12,36 +12,36 @@ npm install webradio-metadata
 ## Command-line usage
 * To display the list of compatible radios.
 ```sh
-nodejs getStreamMetadata.js list
+nodejs index.js list
 ```
 
 * To check that the parsing scripts are working correctly. Empty result means success.
 ```sh
-nodejs getStreamMetadata.js test
+nodejs index.js test
 ```
 
 * To get the metadata from a specific radio. If the country or the name of a radio has multiple words, use quotes.
 ```sh
-nodejs getStreamMetadata.js COUNTRY NAME
+nodejs index.js COUNTRY NAME
 ```
 Example usages
 ```sh
-$ nodejs getStreamMetadata.js "France" "France Info"
+$ nodejs index.js "France" "France Info"
 {"err":null,"data":{"artist":"Le 17 | 20 : Nicolas Teillard","title":"Droit à l'erreur - Guillaume Poitrinal"},"corsEnabled":false}
 ```
 ```sh
-$ nodejs getStreamMetadata.js "France" "Radio Nova"
+$ nodejs index.js "France" "Radio Nova"
 {"err":null,"data":{"artist":"AL GREEN","title":"LET'S STAY TOGETHER","cover":"https://nova.fr/sites/default/files/CQCT/2017-07/al-green-lets-stay-together-2893.jpeg"},"corsEnabled":true}
 ```
 
 * To get metadata for all supported radios.
 - Output in JSON:
 ```sh
-nodejs getStreamMetadata.js all-json
+nodejs index.js all-json
 ```
 - Output in human readable format:
 ```sh
-nodejs getStreamMetadata.js all-human
+nodejs index.js all-human
 ```
 
 ## Usage as a module
@@ -60,8 +60,8 @@ This project uses Node.JS scripts and a JS web interface. Note the Node scripts 
 * Belgium - Bel-RTL
 * Belgium - MNM
 * Belgium - Radio 1
-* Belgium - Studio Brussel
 * Belgium - RTBF La Première
+* Belgium - Studio Brussel
 * Belgium - Zen FM
 * France - Alouette
 * France - BFM Business
@@ -74,6 +74,7 @@ This project uses Node.JS scripts and a JS web interface. Note the Node scripts 
 * France - France Inter
 * France - France Musique
 * France - Fun Radio
+* France - Hit West
 * France - Jazz Radio
 * France - M Radio
 * France - Nostalgie
@@ -126,23 +127,20 @@ Three strategies have been used to write the recipes:
 * brute parsing the live webpage contents when no API is available.
 
 When you have identified how to extract the data, you need to have a look at two files:
-1) ```urls.js```
+1) Radio indexes: ```parsers/COUNTRY/index.js```
 
-Example syntax:
+Example syntax with ```COUNTRY=France``` and ```NAME=Fun Radio```:
 ```javascript
 [
-  {
-    country: "France",
-    radios: [
-      ...
-      { name: "Fun Radio", url: "http://www.funradio.fr/direct", parser: "France/RTL2" },
-      ...
+  ...
+  { name: "Fun Radio", url: "https://www.funradio.fr/direct", parser: require("./RTL2") },
+  ...
 ```
 The ```name``` field should match the corresponding entry in the [radio browser wiki](http://www.radio-browser.info/gui/#/).
-The ```parser``` field is optional. If present, it tells the program to use the script for another radio, when the syntax for the other radio is the same.
+The ```url``` field is the path to the ressource to load.
+The ```parser``` field indicates the path to the parsing script. It is most often named as the radio itself, but can be another one, when the syntax for the other radio is the same.
 
-2) ```parsers/*.js```
-Please name new parser files with the following syntax: ```country_name.js```, with ```country``` and ```name``` matching the values in ```urls.js```.
+2) Parsers: ```parsers/COUNTRY/NAME.js```
 
 Sample:
 ```javascript

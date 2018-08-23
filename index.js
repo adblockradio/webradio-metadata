@@ -2,8 +2,8 @@
 // This file is licensed under the Affero General Public License version 3 or later.
 // See the LICENSE file.
 
-const urls = require("./urls.js");
 const { log } = require("abr-log")("meta");
+const parsers = require("./parsers/index.js");
 
 var LOG_ERRORS = false;
 
@@ -12,31 +12,31 @@ exports.setLog = function(customLogger) {
 }
 
 exports.getMeta = getMeta = function(country, name, callback) {
-	for (let i=0; i<urls.length; i++) {				// loop on countries
-		if (urls[i].country !== country) continue;
+	if (!parsers[country]) return callback("radio " + country + "_" + name + " not found", null, null);
+	log.debug("country=" + country + " name=" + name);
+	let parsingData = parsers[country].filter(p => p.name === name);
+	if (!parsingData.length) return callback("radio " + country + "_" + name + " not found", null, null);
+	parsingData = parsingData[0];
 
-		for (let j=0; j<urls[i].radios.length; j++) {	// loop on radios
-			if (urls[i].radios[j].name !== name) continue;
-
-			if (!urls[i].radios[j].parser) urls[i].radios[j].parser = country + "/" + name;
-			return require("./parsers/" + urls[i].radios[j].parser + ".js")(urls[i].radios[j].url, function(error, parsedData, corsEnabled) {
-				if (error) {
-					return callback(error, null, corsEnabled);
-				} else {
-					return callback(null, parsedData, corsEnabled);
-				}
-			});
-		}
+	try {
+		parsingData.parser(parsingData.url, function(error, parsedData, corsEnabled) {
+			if (error) {
+				return callback(error, null, corsEnabled);
+			} else {
+				return callback(null, parsedData, corsEnabled);
+			}
+		});
+	} catch(e) {
+		log.error("error getting meta. e=" + e + " country=" + country + " name=" + name);
 	}
-	return callback("radio " + country + "_" + name + " not found", null, null);
 }
 
 exports.getAvailable = getAvailable = function() {
 	var list = [];
-	for (let i=0; i<urls.length; i++) {
-		for (let j=0; j<urls[i].radios.length; j++) {	// loop on radios
-			list.push({ country: urls[i].country, name: urls[i].radios[j].name });
-		}
+	const countries = Object.keys(parsers);
+	for (let ic = 0; ic < countries.length; ic++) {
+		const radios = parsers[countries[ic]].map(function(p) { return { country: countries[ic], name: p.name }});
+		list = list.concat(radios);
 	}
 	return list;
 }
@@ -68,15 +68,12 @@ exports.getAll = getAll = function(callback) {
 	f(0);
 }
 
-//module.exports = getStreamMetadata;
-
-if (process.argv.length >= 3 && process.argv[1].slice(-20) == "getStreamMetadata.js") { // standalone usage
+if (process.argv.length >= 3 && process.argv[1].slice(-8) == "index.js") { // standalone usage
 	if (process.argv[2] == "list") {				// loop on countries
 		log.info("list of available parsing recipes:");
-		for (let i=0; i<urls.length; i++) {
-			for (let j=0; j<urls[i].radios.length; j++) {	// loop on radios
-				console.log("* " + urls[i].country + " - " + urls[i].radios[j].name);
-			}
+		const list = getAvailable();
+		for (let i=0; i<list.length; i++) {
+			console.log("* " + list[i].country + " - " + list[i].name);
 		}
 	} else if (process.argv[2] == "all-human" || process.argv[2] == "test") {
 		LOG_ERRORS = process.argv[2] == "test";

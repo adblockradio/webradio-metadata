@@ -36,9 +36,17 @@ module.exports = function(exturl, callback) {
 					console.log(stdout);
 					return callback(e.message, null, null);
 				}
-				//console.log(JSON.stringify(parsedResult, null, "\t"));
-				const artist = parsedResult.presenters[0].name;
-				const title = parsedResult.title;
+				console.log(JSON.stringify(parsedResult, null, "\t"));
+				let artist, title;
+				if (!parsedResult.presenters.length) {
+					artist = parsedResult.title;
+					title = parsedResult.shortDescription;
+				} else {
+					artist = parsedResult.presenters[0].name;
+					title = parsedResult.title;
+				}
+				//const artist = parsedResult.presenters[0].name;
+				//const title = parsedResult.title;
 
 				return callback(null, { artist: artist, title: title }, corsEnabled);
 
