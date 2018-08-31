@@ -1,3 +1,9 @@
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+// Copyright (c) 2018 Alexandre Storelli
+
 module.exports = [
 	{ name: "bigFM Deutschland", url: "wss://ws.bigfm.de/", parser: require("./bigFM Deutschland") },
 	{ name: "Fritz", url: "https://www.fritz.de/include/frz/zeitstrahl/nowonair.json", parser: require("./Fritz") },

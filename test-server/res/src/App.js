@@ -1,6 +1,8 @@
-// Copyright (c) 2017 Alexandre Storelli
-// This file is licensed under the Affero General Public License version 3 or later.
-// See the LICENSE file.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+// Copyright (c) 2018 Alexandre Storelli
 
 import React, { Component } from 'react';
 import './App.css';
@@ -78,7 +80,7 @@ class App extends Component {
 					}
 				</div>
 				<div class="Footer">
-					Software released under licence AGPL v3.0. Parsed contents may be protected by copyright
+					Software released under licence MPL-2.0. Parsed contents may be protected by copyright
 				</div>
 			</div>
 		);

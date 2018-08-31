@@ -1,3 +1,9 @@
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+// Copyright (c) 2018 Alexandre Storelli
+
 module.exports = [
 	{ name: "Alouette", url: "https://www.alouette.fr/player/onair.php", parser: require("./Alouette") },
 	{ name: "BFM Business", url: "https://bfmbusiness.bfmtv.com/current-emission/3", parser: require("./BFM Business") },

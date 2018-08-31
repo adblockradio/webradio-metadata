@@ -12,7 +12,7 @@
 		"metadata",
 		"webradio"
 	],
-	"license": "AGPL-3.0",
+	"license": "MPL-2.0",
 	"dependencies": {
 		"abr-log": "^1.0.2",
 		"chalk": "^2.4.1",

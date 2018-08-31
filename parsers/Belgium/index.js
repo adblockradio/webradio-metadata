@@ -1,3 +1,9 @@
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+// Copyright (c) 2018 Alexandre Storelli
+
 module.exports = [
 	{ name: "Bel-RTL", url: "https://www.radiocontact.be/json/epg24h_4.json", parser: require("./Bel-RTL") },
 	{ name: "MNM", url: "https://services.vrt.be/playlist/onair?channel_code=55", parser: require("./MNM") },
