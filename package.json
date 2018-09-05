@@ -1,7 +1,7 @@
 {
 	"name": "webradio-metadata",
-	"version": "0.1.26",
-	"description": "API knowledge base to get metadata of radio streams",
+	"version": "0.1.27",
+	"description": "API scraping recipes to get metadata of radio streams",
 	"main": "index.js",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1"
@@ -23,7 +23,11 @@
 		"xml2js": "^0.4.19"
 	},
 	"bugs": {
-		"url": "https://github.com/dest4/webradio-metadata/issues"
+		"url": "https://github.com/adblockradio/webradio-metadata/issues"
 	},
-	"homepage": "https://github.com/dest4/webradio-metadata"
+	"homepage": "https://github.com/adblockradio/webradio-metadata",
+	"repository": {
+		"type": "git",
+		"url": "git://github.com/adblockradio/webradio-metadata.git"
+	}
 }
