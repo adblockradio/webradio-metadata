@@ -4,8 +4,10 @@
 
 // Copyright (c) 2018 Alexandre Storelli
 
-var get = require("../get.js");
-let log = require("abr-log")("meta");
+"use strict";
+
+const get = require("../get.js");
+const log = require("abr-log")("meta");
 
 module.exports = function(exturl, callback) {
 	get(exturl, function(err, result, corsEnabled) {
@@ -13,20 +15,21 @@ module.exports = function(exturl, callback) {
 			return callback(err, null, null);
 		}
 
-		var isHTTPS = exturl.slice(0,6) == "https";
-		var coverPrefix = isHTTPS ? "https://nova.fr" : "http://nova.fr";
+		const isHTTPS = exturl.slice(0,6) == "https";
+		const coverPrefix = isHTTPS ? "https://nova.fr" : "http://nova.fr";
+		let artist, title, cover, parsedResult;
 
 		try {
 			parsedResult = JSON.parse(result);
-			var curTrack = parsedResult["currentTrack"];
+			const curTrack = parsedResult["currentTrack"];
 			if (curTrack) {
-				var artist = curTrack["artist"];
-				var title = curTrack["title"];
-				var cover = coverPrefix + curTrack["image"];
+				artist = curTrack["artist"];
+				title = curTrack["title"];
+				cover = coverPrefix + curTrack["image"];
 			} else {
-				var artist = parsedResult["radio"]["name"];
-				var title = parsedResult["currentShow"] ? parsedResult["currentShow"]["title"] : "";
-				var cover = coverPrefix + parsedResult["radio"]["image"];
+				artist = parsedResult["radio"]["name"];
+				title = parsedResult["currentShow"] ? parsedResult["currentShow"]["title"] : "";
+				cover = coverPrefix + parsedResult["radio"]["image"];
 			}
 		} catch(e) {
 			log.warn("France_Radio Nova: parsedResult=" + JSON.stringify(parsedResult));
