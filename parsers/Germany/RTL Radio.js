@@ -5,6 +5,7 @@
 // Copyright (c) 2018 Alexandre Storelli
 
 var get = require("../get.js");
+const { log } = require("abr-log")("meta-Germany_RTL Radio");
 
 module.exports = function(exturl, callback) {
 	get(exturl, function(err, result, corsEnabled) {
@@ -18,7 +19,7 @@ module.exports = function(exturl, callback) {
 		try {
 			var r = result.slice(b1.length, result.length - b2.length);
 			parsedResult = JSON.parse(r)["results"]["196"];
-			//console.log(JSON.stringify(parsedResult, null, "\t"));
+			//log.debug(JSON.stringify(parsedResult, null, "\t"));
 
 			var curTrack = parsedResult.filter(e => e.type === "PE_E");
 			if (curTrack[0]) {
@@ -32,7 +33,7 @@ module.exports = function(exturl, callback) {
 				cover = backup["imageUrl"];
 			}
 		} catch(e) {
-			console.log(r);
+			log.debug(r);
 			return callback(e.message, null, null);
 		}
 		return callback(null, { artist: artist, title: title, cover: cover }, corsEnabled);

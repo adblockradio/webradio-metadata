@@ -5,6 +5,8 @@
 // Copyright (c) 2018 Alexandre Storelli
 
 var get = require("../get.js");
+const { log } = require("abr-log")("meta-Germany_Jam FM");
+
 
 module.exports = function(exturl, callback) {
 	get(exturl, function(err, result, corsEnabled) {
@@ -16,7 +18,7 @@ module.exports = function(exturl, callback) {
 		try {
 			var parsedResult = JSON.parse(result);
 		} catch(e) {
-			console.log(result);
+			log.debug(result);
 			return callback(e.message, null, null);
 		}
 

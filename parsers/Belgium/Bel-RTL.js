@@ -7,6 +7,7 @@
 var get = require("../get.js");
 const htmlToStr = require("../htmlToStr.js");
 //const { exec } = require("child_process");
+const { log } = require("abr-log")("meta-Belgium_Bel-RTL");
 
 module.exports = function(exturl, callback) {
 	get(exturl, function(err, result, corsEnabled) {
@@ -21,7 +22,7 @@ module.exports = function(exturl, callback) {
 			parsedResult = parsedResult.items;
 			parsedResult = parsedResult.filter(e => (now >= new Date(e.datetime)) && (now < new Date(+new Date(e.datetime) + Number(e.duration) * 60000)))[0];
 		} catch(e) {
-			console.log(result);
+			log.debug(result);
 			return callback(e.message, null, null);
 		}
 
@@ -45,11 +46,11 @@ module.exports = function(exturl, callback) {
 			parsedResult = JSON.parse(stdout);
 			parsedResult = parsedResult["metadata-list"][0]["metadata"];
 		} catch(e) {
-			console.log(result);
+			log.debug(result);
 			return callback(e.message, null, null);
 		}
 
-		console.log(parsedResult);
+		log.debug(parsedResult);
 	});
 	*/
 }

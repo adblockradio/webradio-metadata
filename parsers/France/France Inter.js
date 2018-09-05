@@ -5,6 +5,7 @@
 // Copyright (c) 2018 Alexandre Storelli
 
 var get = require("../get.js");
+const { log } = require("abr-log")("meta-France_France Inter");
 
 module.exports = function(exturl, callback) {
 	get(exturl, function(err, result, corsEnabled) {
@@ -41,7 +42,7 @@ module.exports = function(exturl, callback) {
 		}
 		/*for (ip = 0; ip<parsedResult.length; ip++) {
 			var item = parsedResult[ip];
-			console.log("item.start=" + item.start + " item.end=" + item.end);
+			log.debug("item.start=" + item.start + " item.end=" + item.end);
 		}*/
 		return callback("program not found at time stamp " + now, null, null);
 	});

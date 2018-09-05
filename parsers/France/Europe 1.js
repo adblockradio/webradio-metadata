@@ -5,6 +5,8 @@
 // Copyright (c) 2018 Alexandre Storelli
 
 var get = require("../get.js");
+const { log } = require("abr-log")("meta-France_Europe 1");
+
 
 module.exports = function(exturl, callback) {
 	var now = new Date();
@@ -29,9 +31,9 @@ module.exports = function(exturl, callback) {
 
 		for (iit=0; iit<items.length; iit++) {
 			var item = parsedResult["infos"][items[iit]];
-			//console.log(item.begin + " -- " + nowStr + " -- " + item.end);
+			//log.debug(item.begin + " -- " + nowStr + " -- " + item.end);
 			if (item.begin <= nowStr && nowStr < item.end) {
-				//console.log(iit + " ==> " + JSON.stringify(item));
+				//log.debug(iit + " ==> " + JSON.stringify(item));
 				return callback(null, { artist: item["speaker"], title: item["titre"], cover: "https:" + item["image"] }, corsEnabled);
 			}
 		}

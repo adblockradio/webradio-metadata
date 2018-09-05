@@ -7,7 +7,7 @@
 "use strict";
 
 const get = require("../get.js");
-const log = require("abr-log")("meta");
+const { log } = require("abr-log")("meta-France_Radio Nova");
 
 module.exports = function(exturl, callback) {
 	get(exturl, function(err, result, corsEnabled) {

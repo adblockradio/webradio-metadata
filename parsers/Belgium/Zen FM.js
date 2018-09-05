@@ -5,6 +5,7 @@
 // Copyright (c) 2018 Alexandre Storelli
 
 const { exec } = require('child_process');
+const { log } = require("abr-log")("meta-Zen FM");
 
 module.exports = function(exturl, callback) {
 
@@ -17,13 +18,13 @@ module.exports = function(exturl, callback) {
 		try {
 			p = JSON.parse(stdout);
 			p = p["data"];
-			//console.log(JSON.stringify(parsedResult, null, "\t"));
+			//log.debug(JSON.stringify(parsedResult, null, "\t"));
 		} catch(e) {
-			console.log(stdout);
+			log.debug(stdout);
 			return callback(e.message, null, null);
 		}
 
-		//console.log(p);
+		//log.debug(p);
 
 		const b1 = "</span><span>";
 		const i1 = p.indexOf(b1);
@@ -43,7 +44,7 @@ module.exports = function(exturl, callback) {
 			var artist = split[0].trim();
 			var title = split[1].trim();
 		} else {
-			//console.log("curt=" + curt + " t=" + t + "D=" + (60 * (curt[0] - t[0]) + curt[1] - t[1]));
+			//log.debug("curt=" + curt + " t=" + t + "D=" + (60 * (curt[0] - t[0]) + curt[1] - t[1]));
 			artist = "Zen FM";
 			title = "Chill, lounge & trendy grooves";
 		}

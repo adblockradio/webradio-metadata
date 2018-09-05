@@ -5,6 +5,7 @@
 // Copyright (c) 2018 Alexandre Storelli
 
 var get = require("../get.js");
+const { log } = require("abr-log")("meta-United Kingdom_BBC Radio 2");
 
 module.exports = function(exturl, callback) {
 	get(exturl, function(err, result, corsEnabled) {
@@ -23,14 +24,14 @@ module.exports = function(exturl, callback) {
 		try {
 			parsedResult = JSON.parse(r);
 		} catch(e) {
-			console.log(r);
+			log.debug(r);
 			return callback(e.message, null, null);
 		}
 
 		parsedResult = parsedResult["modules"];
 		parsedResult = parsedResult.filter(e => e.id === "listen_live")[0]["items"];
 		parsedResult = parsedResult.filter(e => e.id === "bbc_radio_two")[0];
-		//console.log(JSON.stringify(parsedResult, null, "\t"));
+		//log.debug(JSON.stringify(parsedResult, null, "\t"));
 
 		const artist = parsedResult["titles"]["primary"];
 		const title = parsedResult["titles"]["secondary"];

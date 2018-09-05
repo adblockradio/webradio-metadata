@@ -5,12 +5,13 @@
 // Copyright (c) 2018 Alexandre Storelli
 
 var get = require("../get.js");
+const { log } = require("abr-log")("meta-France_Virgin Radio");
 
 module.exports = function(exturl, callback) {
 	var now = new Date(+new Date() - 15*60*1000).toISOString().replace(/T/g, " ").replace(/Z/g, "").slice(0, 19);
-	//console.log(exturl + now);
+	//log.debug(exturl + now);
 	get(exturl + now, function(err, result, corsEnabled) {
-		//console.log("received");
+		//log.debug("received");
 		if (err) {
 			return callback(err, null, null);
 		}

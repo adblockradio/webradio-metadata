@@ -4,8 +4,8 @@
 
 // Copyright (c) 2018 Alexandre Storelli
 
-var get = require("../get.js");
-let log = require("abr-log")("meta");
+const get = require("../get.js");
+const { log } = require("abr-log")("meta-France_France Info");
 
 module.exports = function(exturl, callback) {
 	get(exturl, function(err, result, corsEnabled) {
@@ -20,7 +20,7 @@ module.exports = function(exturl, callback) {
 		var b1 = "program__grid__line ";
 		var i1 = r1.indexOf(b1);
 		var r2 = r1.slice(0, i1);
-		//console.log(r2);
+		//log.debug(r2);
 
 		var b2 = "<span class=\"program__grid__line__right__title\">";
 		var b3 = "</span>";
@@ -45,7 +45,7 @@ module.exports = function(exturl, callback) {
 			return callback(null, meta1, corsEnabled);
 		}
 
-		//console.log(r2s[currentBlock]);
+		//log.debug(r2s[currentBlock]);
 		var b4 = "class=\"program__grid__line__right__title\">";
 		var b5 = "</a>";
 		var i4 = r2s[currentBlock].indexOf(b4);

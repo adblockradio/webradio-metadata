@@ -5,6 +5,7 @@
 // Copyright (c) 2018 Alexandre Storelli
 
 var get = require("../get.js");
+const { log } = require("abr-log")("meta-Spain_Cadena 100");
 
 module.exports = function(exturl, callback) {
 	get(exturl, function(err, result, corsEnabled) {
@@ -16,7 +17,7 @@ module.exports = function(exturl, callback) {
 		try {
 			var parsedResult = JSON.parse(result);
 		} catch(e) {
-			console.log(result);
+			log.debug(result);
 			return callback(e.message, null, null);
 		}
 
@@ -33,7 +34,7 @@ module.exports = function(exturl, callback) {
 			try {
 				parsedResult = JSON.parse(decodeURI(result2).replace(/\\\//g, "/"));
 			} catch(e) {
-				console.log(result2);
+				log.debug(result2);
 				return callback(e.message, null, null);
 			}
 

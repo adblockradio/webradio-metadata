@@ -5,6 +5,8 @@
 // Copyright (c) 2018 Alexandre Storelli
 
 var get = require("../get.js");
+const { log } = require("abr-log")("meta-France_FIP");
+
 
 module.exports = function(exturl, callback) {
 	get(exturl, function(err, result, corsEnabled) {
@@ -19,7 +21,7 @@ module.exports = function(exturl, callback) {
 		}
 
 		var curTrack = parsedResult.steps[parsedResult.levels["0"].items[parsedResult.levels["0"].position]];
-		//console.log(curTrack);
+		//log.debug(curTrack);
 		if (!curTrack) {
 			return callback("parsing problem", parsedResult["radio"]["name"], corsEnabled);
 		} else {

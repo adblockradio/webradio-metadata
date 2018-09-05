@@ -5,6 +5,7 @@
 // Copyright (c) 2018 Alexandre Storelli
 
 var get = require("../get.js");
+const { log } = require("abr-log")("meta-Belgium_Bel-RTL");
 
 module.exports = function(exturl, callback) {
 	get(exturl, function(err, result, corsEnabled) {
@@ -15,9 +16,9 @@ module.exports = function(exturl, callback) {
 
 		try {
 			parsedResult = JSON.parse(result);
-			//console.log(JSON.stringify(parsedResult, null, "\t"));
+			//log.debug(JSON.stringify(parsedResult, null, "\t"));
 		} catch(e) {
-			console.log(result);
+			log.debug(result);
 			return callback(e.message, null, null);
 		}
 

@@ -5,6 +5,7 @@
 // Copyright (c) 2018 Alexandre Storelli
 
 var get = require("../get.js");
+const { log } = require("abr-log")("meta-United Kingdom_Absolute Radio");
 
 module.exports = function(exturl, callback) {
 	get(exturl, function(err, result, corsEnabled) {
@@ -13,7 +14,7 @@ module.exports = function(exturl, callback) {
 			return callback(err, null, null);
 		}
 
-		//console.log(result);
+		//log.debug(result);
 
 		const b0 = "title=\"Listen to Absolute Radio\">";
 		const i0 = result.indexOf(b0);

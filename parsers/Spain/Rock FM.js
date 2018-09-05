@@ -5,6 +5,7 @@
 // Copyright (c) 2018 Alexandre Storelli
 
 var get = require("../get.js");
+const { log } = require("abr-log")("meta-Spain_Rock FM");
 
 module.exports = function(exturl, callback) {
 	get(exturl, function(err, result, corsEnabled) {
@@ -17,7 +18,7 @@ module.exports = function(exturl, callback) {
 			var parsedResult = JSON.parse(result);
 			parsedResult = JSON.parse(decodeURI(parsedResult.value));
 		} catch(e) {
-			console.log(result);
+			log.debug(result);
 			return callback(e.message, null, null);
 		}
 

@@ -5,6 +5,7 @@
 // Copyright (c) 2018 Alexandre Storelli
 
 var get = require("../get.js");
+const { log } = require("abr-log")("meta-Germany_Klassik Radio");
 
 module.exports = function(exturl, callback) {
 	get(exturl, function(err, result, corsEnabled) {
@@ -17,7 +18,7 @@ module.exports = function(exturl, callback) {
 			parsedResult = JSON.parse(result);
 			parsedResult = parsedResult.nowPlaying[0];
 		} catch(e) {
-			console.log(result);
+			log.debug(result);
 			return callback(e.message, null, null);
 		}
 

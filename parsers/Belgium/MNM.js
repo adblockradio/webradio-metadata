@@ -5,6 +5,8 @@
 // Copyright (c) 2018 Alexandre Storelli
 
 const { exec } = require("child_process");
+const { log } = require("abr-log")("meta-Belgium_MNM");
+
 
 module.exports = function(exturl, callback) {
 	exec("curl '" + exturl + "' --compressed -H 'Accept: application/vnd.playlist.vrt.be.noa_1.0+json'", (error, stdout, stderr) => {
@@ -17,11 +19,11 @@ module.exports = function(exturl, callback) {
 			parsedResult = JSON.parse(stdout);
 			parsedResult = parsedResult["onairs"].filter(e => e.onairType === "NOW");
 		} catch(e) {
-			console.log(stdout);
+			log.debug(stdout);
 			return callback(e.message, null, null);
 		}
 
-		//console.log(parsedResult);
+		//log.debug(parsedResult);
 
 		if (parsedResult.length && parsedResult[0].properties.length) {
 			const p = parsedResult[0].properties;
@@ -49,16 +51,16 @@ module.exports = function(exturl, callback) {
 */
 		} else {
 			exec('curl "https://services.vrt.be/epg/onair?channel_code=55" -H "Accept: application/vnd.epg.vrt.be.onairs_1.0+json"', (error, stdout2, stderr2) => {
-				//console.log(stdout2);
+				//log.debug(stdout2);
 				try {
 					parsedResult = JSON.parse(stdout2);
 					parsedResult = parsedResult["onairs"][0]["now"];
 				} catch(e) {
-					console.log(stdout);
+					log.debug(stdout);
 					return callback(e.message, null, null);
 				}
 
-				//console.log(parsedResult);
+				//log.debug(parsedResult);
 
 				let artist, title;
 				if (!parsedResult.presenters.length) {

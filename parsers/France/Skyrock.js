@@ -30,7 +30,6 @@ module.exports = function(exturl, callback) {
 		for (var i=0; i<records.length; i++) {
 			if (records[i].info["start_ts"] < now && records[i].info["end_ts"] > now) {
 				return callback(null, { artist:records[i].artists[0].name, title:records[i].info["title"], cover: records[i].info["cover_uri"] }, corsEnabled);
-				//console.log()
 			}
 		}
 		return callback(null, { artist: presenter, title:meta1, cover: cover }, corsEnabled);

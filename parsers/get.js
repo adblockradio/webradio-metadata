@@ -7,22 +7,24 @@
 var http = require("http");
 var https = require("https");
 var url = require("url");
+const { log } = require("abr-log")("meta-get");
+
 
 module.exports = function(exturl, callback) {
 	var parsedUrl = url.parse(exturl);
-	//console.log(parsedUrl);
+	//log.debug(parsedUrl);
 	parsedUrl.withCredentials = false;
 	var request = (parsedUrl.protocol == "https:" ? https : http).request(parsedUrl, function(res) {
-		//console.log(res.getHeader("Access-Control-Allow-Origin"));
+		//log.debug(res.getHeader("Access-Control-Allow-Origin"));
 		var corsEnabled = res.headers["access-control-allow-origin"] === "*";
 		var result = ""
 		res.on('data', function(chunk) {
-			//console.log("data");
+			//log.debug("data");
 			result += chunk;
 		});
 		res.on('end', function() {
-			//console.log("response.................");
-			//console.log(result);
+			//log.debug("response.................");
+			//log.debug(result);
 			return callback(null, result, corsEnabled);
 		});
 	}).on("error", function(e) {

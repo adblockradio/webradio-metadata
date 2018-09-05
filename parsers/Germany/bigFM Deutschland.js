@@ -5,6 +5,7 @@
 // Copyright (c) 2018 Alexandre Storelli
 
 const W = require("ws");
+const { log } = require("abr-log")("meta-Germany_bigFM Deutschland");
 
 module.exports = function(exturl, callback) {
 	const ws = new W(exturl);
@@ -17,7 +18,7 @@ module.exports = function(exturl, callback) {
 		try {
 			var parsedData = JSON.parse(data);
 		} catch(e) {
-			console.log(data);
+			log.debug(data);
 			log.error("could not parse data");
 		}
 
