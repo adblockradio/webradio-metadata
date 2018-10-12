@@ -23,7 +23,20 @@ module.exports = function(exturl, callback) {
 			return callback(e.message, null, null);
 		}
 
-		return callback(null, { artist: curTrack["artist"].replace(/\|/g, ""), title: curTrack["title"], cover: curTrack["cover"] }, corsEnabled);
-
+		if (!curTrack) {
+			//log.debug("first URL did not contain useful data");
+			get("https://www.virginradio.fr/calendar/api/current.json", function(err, result2, corsEnabled) {
+				//log.debug(result2);
+				try {
+					parsedResult = JSON.parse(result2);
+					curTrack = parsedResult["root_tab"]["events"]["0"];
+				} catch(e) {
+					return callback(e.message, null, null);
+				}
+				return callback(null, { artist: "Virgin Radio", title: curTrack["title"], cover: null }, corsEnabled);
+			});
+		} else {
+			return callback(null, { artist: curTrack["artist"].replace(/\|/g, ""), title: curTrack["title"], cover: curTrack["cover"] }, corsEnabled);
+		}
 	});
 }
