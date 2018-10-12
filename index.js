@@ -15,7 +15,6 @@ exports.setLog = function(customLogger) {
 
 exports.getMeta = getMeta = function(country, name, callback) {
 	if (!parsers[country]) return callback("radio " + country + "_" + name + " not found", null, null);
-	log.debug("country=" + country + " name=" + name);
 	let parsingData = parsers[country].filter(p => p.name === name);
 	if (!parsingData.length) return callback("radio " + country + "_" + name + " not found", null, null);
 	parsingData = parsingData[0];
@@ -31,6 +30,13 @@ exports.getMeta = getMeta = function(country, name, callback) {
 	} catch(e) {
 		log.error("error getting meta. e=" + e + " country=" + country + " name=" + name);
 	}
+}
+
+exports.isAvailable = isAvailable = function(country, name) {
+	if (!parsers[country]) return false;
+	const parsingData = parsers[country].filter(p => p.name === name);
+	if (!parsingData.length) return false;
+	return true;
 }
 
 exports.getAvailable = getAvailable = function() {
