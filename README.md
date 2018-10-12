@@ -4,6 +4,9 @@ Collection of urls and parsing scripts to fetch metadata about what is being bro
 * a cover image (if available)
 * a CORS flag indicating, if true, that the script can scrape cross-domain in a browser.
 
+Note that this module gets the information from the radio websites, as most radios have a website indicating what is being broadcast live.
+It could have been possible to parse [ICY metadata](http://www.smackfu.com/stuff/programming/shoutcast.html), but it is missing or broken in most situations.
+
 ## Installation
 ```sh
 npm install webradio-metadata
