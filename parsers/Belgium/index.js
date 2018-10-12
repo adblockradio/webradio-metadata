@@ -5,7 +5,7 @@
 // Copyright (c) 2018 Alexandre Storelli
 
 module.exports = [
-	{ name: "Bel-RTL", url: "https://www.radiocontact.be/json/epg24h_4.json", parser: require("./Bel-RTL") },
+	{ name: "Bel-RTL", url: "https://www.rtl.be/belrtl/js/json/bel-epg-today.json", parser: require("./Bel-RTL") },
 	{ name: "MNM", url: "https://services.vrt.be/playlist/onair?channel_code=55", parser: require("./MNM") },
 	{ name: "Radio 1", url: "https://services.vrt.be/playlist/onair?channel_code=11&accept=application%2Fvnd.playlist.vrt.be.noa_1.0%2Bjson", parser: require("./MNM") },
 	{ name: "RTBF La Première", url: "http://np.maradio.be/qp/v3/events?rpId=1103", parser: require("./RTBF La Première") },
