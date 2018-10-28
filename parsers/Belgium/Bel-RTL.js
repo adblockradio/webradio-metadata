@@ -48,19 +48,19 @@ module.exports = function(exturl, callback) {
 		try {
 			var parsedResult = JSON.parse(htmlToStr(result));
 			parsedResult = parsedResult["epg"];
-			parsedResult = parsedResult.filter(e => date >= e.date && time >= e.timing && (reversedDate  + " " + time) < e.timingend)[0];
-		} catch(e) {
+			parsedResult = parsedResult.filter(e => date >= e.date && time >= e.timing && (reversedDate + " " + time) < e.timingend)[0];
+			if (parsedResult) {
+				//log.debug(result2);
+				const artist = (parsedResult["animators"] && parsedResult["animators"][0] && parsedResult["animators"][0]["Name"]) || "Bel RTL";
+				const title = parsedResult["title"] || "Bel RTL";
+				const cover = "https://www.rtl.be/belrtl" + parsedResult["img"];
+				return callback(null, { artist: artist, title: title, cover: cover }, corsEnabled);
+			}
+		} catch (e) {
 			log.debug(result);
 			return callback(e.message, null, null);
 		}
 
-		if (parsedResult) {
-			//log.debug(result2);
-			const artist = (parsedResult["animators"] && parsedResult["animators"][0] && parsedResult["animators"][0]["Name"]) || "Bel RTL";
-			const title = parsedResult["title"] || "Bel RTL";
-			const cover = "https://www.rtl.be/belrtl" + parsedResult["img"];
-			return callback(null, { artist: artist, title: title, cover: cover }, corsEnabled);
-		}
 
 		log.debug("first result is empty");
 		get("https://www.radiocontact.be/json/epg24h_4.json", function(err, result2, corsEnabled) {
@@ -69,16 +69,15 @@ module.exports = function(exturl, callback) {
 				const now = new Date();
 				parsedResult = parsedResult.items;
 				parsedResult = parsedResult.filter(e => (now >= new Date(e.datetime)) && (now < new Date(+new Date(e.datetime) + Number(e.duration) * 60000)))[0];
-			} catch(e) {
+				//log.debug(parsedResult);
+				const artist = "Bel RTL";
+				const title = (parsedResult && parsedResult.title) || "Bel RTL";
+				const cover = "https:" + parsedResult.image;
+				return callback(null, { artist: artist, title: title, cover: cover }, corsEnabled);
+			} catch (e) {
 				log.debug(result);
 				return callback(e.message, null, null);
 			}
-
-			//log.debug(parsedResult);
-			const artist = "Bel RTL";
-			const title = (parsedResult && parsedResult.title) || "Bel RTL";
-			const cover = "https:" + parsedResult.image;
-			return callback(null, { artist: artist, title: title, cover: cover }, corsEnabled);
 		});
 	});
 

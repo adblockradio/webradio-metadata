@@ -15,9 +15,9 @@ module.exports = function(exturl, callback) {
 		try {
 			parsedResult = JSON.parse(result);
 			var curTrack = parsedResult["itms"]["0"];
+			return callback(null, { artist: curTrack["art"], title: curTrack["tit"], cover: "https://players.nrjaudio.fm/live-metadata/player/img/600x/" + curTrack["cov"] }, corsEnabled);
 		} catch(e) {
 			return callback(e.message, null, null);
 		}
-		return callback(null, { artist: curTrack["art"], title: curTrack["tit"], cover: "https://players.nrjaudio.fm/live-metadata/player/img/600x/" + curTrack["cov"] }, corsEnabled);
 	});
 }

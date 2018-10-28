@@ -14,9 +14,9 @@ module.exports = function(exturl, callback) {
 
 		try {
 			parsedResult = JSON.parse(result);
+			return callback(null, { artist: parsedResult[0]["artist"]["name"], title: parsedResult[0]["title"], cover: null }, corsEnabled);
 		} catch(e) {
 			return callback(e.message, null, null);
 		}
-		return callback(null, { artist: parsedResult[0]["artist"]["name"], title: parsedResult[0]["title"], cover: null }, corsEnabled);
 	});
 }

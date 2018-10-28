@@ -17,8 +17,11 @@ module.exports = function(exturl, callback) {
 			if (err) {
 				return callback(err, null, null);
 			}
-
-			return callback(null, { artist: ro["NowPlaying"]["Current"][0]["Artist"][0], title: ro["NowPlaying"]["Current"][0]["Title"][0], cover: ro["NowPlaying"]["Current"][0]["Image"][0] });
+			try {
+				return callback(null, { artist: ro["NowPlaying"]["Current"][0]["Artist"][0], title: ro["NowPlaying"]["Current"][0]["Title"][0], cover: ro["NowPlaying"]["Current"][0]["Image"][0] });
+			} catch(e) {
+				return callback(e.message, null, null);
+			}
 		});
 	});
 }

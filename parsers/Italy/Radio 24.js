@@ -15,16 +15,14 @@ module.exports = function(exturl, callback) {
 
 		try {
 			parsedResult = JSON.parse(result);
+			//log.debug(JSON.stringify(parsedResult, null, "\t"));
+			const artist = parsedResult["conduttoriList"];
+			const title = parsedResult["label"];
+			const cover = "http://www.radio24.ilsole24ore.com" + parsedResult["foto"]["fotohome2T2"]["@value"];
+			return callback(null, { artist: artist, title: title, cover: cover }, corsEnabled);
 		} catch(e) {
 			log.debug(result);
 			return callback(e.message, null, null);
 		}
-
-		//log.debug(JSON.stringify(parsedResult, null, "\t"));
-		const artist = parsedResult["conduttoriList"];
-		const title = parsedResult["label"];
-		const cover = "http://www.radio24.ilsole24ore.com" + parsedResult["foto"]["fotohome2T2"]["@value"];
-
-		return callback(null, { artist: artist, title: title, cover: cover }, corsEnabled);
 	});
 }

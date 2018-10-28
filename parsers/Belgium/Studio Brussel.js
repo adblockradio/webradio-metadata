@@ -19,27 +19,22 @@ module.exports = function(exturl, callback) {
 			parsedResult = JSON.parse(decodeURI(result))["onairs"];
 			//log.debug(JSON.stringify(parsedResult, null, "\t"));
 			parsedResult = parsedResult.filter(e => e.onairType === "NOW");
-		} catch(e) {
+			if (parsedResult.length && parsedResult[0]["properties"]) {
+				//log.debug("music");
+				const p = parsedResult[0]["properties"];
+				const artist = p.filter(e => e.key === "ARTISTNAME")[0].value.trim();
+				const title = p.filter(e => e.key === "TITLE")[0].value.trim();
+				return callback(null, { artist: artist, title: title }, corsEnabled);
+			}
+		} catch (e) {
 			return callback(e.message, null, null);
 		}
 
-		if (parsedResult.length && parsedResult[0]["properties"]) {
-			//log.debug("music");
-			const p = parsedResult[0]["properties"];
-			const artist = p.filter(e => e.key === "ARTISTNAME")[0].value.trim();
-			const title = p.filter(e => e.key === "TITLE")[0].value.trim();
-			return callback(null, { artist: artist, title: title }, corsEnabled);
-
-		} else {
-			//log.debug("no music");
-			get("https://services.vrt.be/epg/onair?channel_code=41&accept=" + encodeURIComponent("application/vnd.epg.vrt.be.onairs_1.0+json"), function(err, stdout, corsEnabled) {
-				try {
-					parsedResult = JSON.parse(stdout);
-					parsedResult = parsedResult["onairs"][0]["now"];
-				} catch(e) {
-					log.debug(stdout);
-					return callback(e.message, null, null);
-				}
+		//log.debug("no music");
+		get("https://services.vrt.be/epg/onair?channel_code=41&accept=" + encodeURIComponent("application/vnd.epg.vrt.be.onairs_1.0+json"), function(err, stdout, corsEnabled) {
+			try {
+				parsedResult = JSON.parse(stdout);
+				parsedResult = parsedResult["onairs"][0]["now"];
 				//log.debug(JSON.stringify(parsedResult, null, "\t"));
 				let artist, title;
 				if (!parsedResult.presenters.length) {
@@ -53,11 +48,10 @@ module.exports = function(exturl, callback) {
 				//const title = parsedResult.title;
 
 				return callback(null, { artist: artist, title: title }, corsEnabled);
-
-			});
-		}
-		const artist = parsedResult.filter(e => e.key === "ARTISTNAME")["value"];
-		const title = parsedResult.filter(e => e.key === "TITLE")["value"];
-
+			} catch (e) {
+				log.debug(stdout);
+				return callback(e.message, null, null);
+			}
+		});
 	});
 }
