@@ -15,12 +15,12 @@ module.exports = function(exturl, callback) {
 		try {
 			parsedResult = JSON.parse(result);
 			var curTrack = parsedResult["current"];
+			if (curTrack["artist"] && curTrack["artist"][curTrack["artist"].length-1] == "|") {
+				curTrack["artist"] = curTrack["artist"].slice(0, -1);
+			}
+			return callback(null, { artist: curTrack["artist"], title: curTrack["title"], cover: curTrack["cover"] }, corsEnabled);
 		} catch(e) {
 			return callback(e.message, null, null);
 		}
-		if (curTrack["artist"] && curTrack["artist"][curTrack["artist"].length-1] == "|") {
-			curTrack["artist"] = curTrack["artist"].slice(0, -1);
-		}
-		return callback(null, { artist: curTrack["artist"], title: curTrack["title"], cover: curTrack["cover"] }, corsEnabled);
 	});
 }

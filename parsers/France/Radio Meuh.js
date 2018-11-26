@@ -11,13 +11,12 @@ module.exports = function(exturl, callback) {
 		if (err) {
 			return callback(err, null, null);
 		}
-
 		try {
 			parsedResult = JSON.parse(result);
 			var curTrack = parsedResult["0"];
+			return callback(null, {artist: curTrack["artist"], title:curTrack["titre"] }, corsEnabled);
 		} catch(e) {
 			return callback(e.message, null, null);
 		}
-		return callback(null, {artist: curTrack["artist"], title:curTrack["titre"] }, corsEnabled);
 	});
 }

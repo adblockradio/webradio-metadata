@@ -10,9 +10,9 @@ module.exports = function(exturl, callback) {
 	get(exturl, function(err, result, corsEnabled) {
 		try {
 			parsedResult = JSON.parse(result);
+			return callback(null, { artist: parsedResult["title"], title: parsedResult["baseline"], cover: parsedResult["imgPath"] }, corsEnabled);
 		} catch(e) {
 			return callback(e.message, null, null);
 		}
-		return callback(null, { artist: parsedResult["title"], title: parsedResult["baseline"], cover: parsedResult["imgPath"] }, corsEnabled);
 	});
 }

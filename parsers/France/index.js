@@ -8,7 +8,7 @@ module.exports = [
 	{ name: "Alouette", url: "https://www.alouette.fr/player/onair.php", parser: require("./Alouette") },
 	{ name: "BFM Business", url: "https://bfmbusiness.bfmtv.com/current-emission/3", parser: require("./BFM Business") },
 	{ name: "Chérie", url: "https://players.nrjaudio.fm/wr_api/live/fr?act=get_plist&id_wr=190&cp=utf8&fmt=json", parser: require("./NRJ") },
-	{ name: "Djam Radio", url: "http://www.djamradio.com/actions/infos.php", parser: require("./Djam Radio") },
+	{ name: "Djam Radio", url: "https://www.djamradio.com/actions/infos.php", parser: require("./Djam Radio") },
 	{ name: "Europe 1", url: "http://cdn1-europe1.new2.ladmedia.fr/var/europe1/storage/diffusions_europe1.js", parser: require("./Europe 1") },
 	{ name: "FIP", url: "https://www.fip.fr/livemeta/7", parser: require("./FIP") },
 	{ name: "France Culture", url: "https://www.franceculture.fr/programmes?xmlHttpRequest=1", parser: require("./France Inter") },
@@ -35,5 +35,5 @@ module.exports = [
 	{ name: "Skyrock", url: "http://skyrock.fm/api/v3/player/onair", parser: require("./Skyrock") },
 	{ name: "TSF Jazz", url: "http://www.tsfjazz.com/getSongInformations.php", parser: require("./TSF Jazz") },
 	{ name: "Virgin Radio France", url: "https://www.virginradio.fr/radio/api/get_all_events.json/argv/id_radio/2/start/", parser: require("./Virgin Radio France") },
-	{ name: "Voltage", url: "http://voltage.fr/players/index/gettitrageplayer/idplayers/2174546520932614870", parser: require("./Radio FG") },
+	{ name: "Voltage", url: "https://www.voltage.fr/players/index/gettitrageplayer/idplayers/2174546520932614870", parser: require("./Radio FG") },
 ]

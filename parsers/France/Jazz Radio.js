@@ -14,19 +14,20 @@ module.exports = function(exturl, callback) {
 		}
 
 		parseString(result, function (err, ro) {
-			if (err) {
+			if (err || !ro || !ro.prog) {
 				return callback(err, null, null);
 			}
-			var stations = ro.prog.station;
-			for (var i=0; i<stations.length; i++) {
-				try {
+			try {
+				var stations = ro.prog.station;
+				for (var i=0; i<stations.length; i++) {
 					if (stations[i]["$"]["id"] == "0") {
 						//console.dir(stations[i]);
 						return callback(null, { artist: stations[i].morceau[0].chanteur[0], title: stations[i].morceau[0].chanson[0], cover: stations[i].morceau[0].pochette[0] }, corsEnabled);
 					}
-				} catch(e) {
-					return callback(e.message, null, null);
 				}
+				return callback("station not found", null, null);
+			} catch(e) {
+				return callback(e.message, null, null);
 			}
 		});
 	});
