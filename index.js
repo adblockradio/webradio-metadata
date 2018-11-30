@@ -14,22 +14,14 @@ exports.setLog = function(customLogger) {
 }
 
 exports.getMeta = getMeta = function(country, name, callback) {
-	if (!parsers[country]) return callback("radio " + country + "_" + name + " not found", null, null);
-	let parsingData = parsers[country].filter(p => p.name === name);
-	if (!parsingData.length) return callback("radio " + country + "_" + name + " not found", null, null);
-	parsingData = parsingData[0];
-
-	try {
-		parsingData.parser(parsingData.url, function(error, parsedData, corsEnabled) {
-			if (error) {
-				return callback(error, null, corsEnabled);
-			} else {
-				return callback(null, parsedData, corsEnabled);
-			}
-		});
-	} catch(e) {
-		log.error("error getting meta. e=" + e + " country=" + country + " name=" + name);
-	}
+	(async function fun() {
+		if (!parsers[country]) return callback("radio " + country + "_" + name + " not found", null);
+		let parsingData = parsers[country].filter(p => p.name === name);
+		if (!parsingData.length) return callback("radio " + country + "_" + name + " not found", null);
+		parsingData = parsingData[0];
+		const result = await parsingData.parser(parsingData.url);
+		return callback((result.error && result.error.message) || result.error, { artist: result.artist, title: result.title, cover: result.cover });
+	})();
 }
 
 exports.isAvailable = isAvailable = function(country, name) {
@@ -91,8 +83,8 @@ if (process.argv.length >= 3 && process.argv[1].slice(-8) == "index.js") { // st
 			console.log(JSON.stringify(jobs));
 		});
 	} else if (process.argv.length >= 4) {
-		getMeta(process.argv[2], process.argv[3], function(err, data, corsEnabled) {
-			log.info(JSON.stringify({ err: err, data: data, corsEnabled: corsEnabled }));
+		getMeta(process.argv[2], process.argv[3], function(err, data) {
+			log.info(JSON.stringify({ err: err, data: data }));
 		});
 	}
 

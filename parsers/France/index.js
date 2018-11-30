@@ -27,7 +27,7 @@ module.exports = [
 	{ name: "Radio Meuh", url: "http://player.radiomeuh.com/rtdata/tracks.json", parser: require("./Radio Meuh") },
 	{ name: "Radio Nova",	url: "http://www.nova.fr/radio/19577/player", parser: require("./Radio Nova") },
 	{ name: "Radio Scoop Lyon", url: "https://radioscoop.com/dyn/xhr.php", parser: require("./Radio Scoop Lyon") },
-	{ name: "Rire et Chansons", url: "http://www.rireetchansons.fr/webradios", parser: require("./Rire et Chansons") },
+	{ name: "Rire et Chansons", url: "https://players.nrjaudio.fm/wr_api/live/fr?act=get_plist&id_wr=200&cp=utf8&fmt=json", parser: require("./Rire et Chansons") },
 	{ name: "RFM", url: "http://directradio.rfm.fr/rfm/now/3", parser: require("./RFM") },
 	{ name: "RMC", url: "https://bfmbusiness.bfmtv.com/current-emission/1", parser: require("./BFM Business") },
 	{ name: "RTL", url: "https://www.rtl.fr/direct/live-player-config.json", parser: require("./RTL") },

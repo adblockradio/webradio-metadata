@@ -4,33 +4,27 @@
 
 // Copyright (c) 2018 Alexandre Storelli
 
-const { exec } = require("child_process");
-const { log } = require("abr-log")("meta-Belgium_MNM");
+"use strict";
+const axios = require("axios");
 
+module.exports = async function(exturl) {
+	try {
+		const req = await axios({
+			method: 'GET',
+			url: exturl,
+			headers: {
+				'Accept': 'application/vnd.playlist.vrt.be.noa_1.0+json'
+			}
+		});
 
-module.exports = function(exturl, callback) {
-	exec("curl '" + exturl + "' --compressed -H 'Accept: application/vnd.playlist.vrt.be.noa_1.0+json'", (error, stdout, stderr) => {
-		if (error) {
-			console.error(`exec error: ${error}`);
-			return callback(error, null, null);
-		}
-
-		try {
-			parsedResult = JSON.parse(stdout);
-			parsedResult = parsedResult["onairs"].filter(e => e.onairType === "NOW");
-		} catch(e) {
-			log.debug(stdout);
-			return callback(e.message, null, null);
-		}
-
-		//log.debug(parsedResult);
+		const parsedResult = req.data["onairs"].filter(e => e.onairType === "NOW");
 
 		if (parsedResult.length && parsedResult[0].properties.length) {
 			const p = parsedResult[0].properties;
 			const artist = p.filter(e => e.key === "ARTISTNAME")[0].value.trim();
 			const title = p.filter(e => e.key === "TITLE")[0].value.trim();
-			return callback(null, { artist: artist, title: title }, true);
-/*
+			return { artist: artist, title: title };
+			/*
 			{
 				"channelCode": "55",
 				"startDate": "2018-07-02T14:50:08.979Z",
@@ -48,33 +42,35 @@ module.exports = function(exturl, callback) {
 						"key" : "COMPOSER",
 						"value"  : "C.Cabello"
 			}
-*/
-		} else {
-			exec('curl "https://services.vrt.be/epg/onair?channel_code=55" -H "Accept: application/vnd.epg.vrt.be.onairs_1.0+json"', (error, stdout2, stderr2) => {
-				//log.debug(stdout2);
-				try {
-					parsedResult = JSON.parse(stdout2);
-					parsedResult = parsedResult["onairs"][0]["now"];
-				} catch(e) {
-					log.debug(stdout);
-					return callback(e.message, null, null);
-				}
-
-				//log.debug(parsedResult);
-
-				let artist, title;
-				if (!parsedResult.presenters.length) {
-					artist = parsedResult.title;
-					title = parsedResult.shortDescription;
-				} else {
-					artist = parsedResult.presenters[0].name;
-					title = parsedResult.title;
-				}
-
-				return callback(null, { artist: artist, title: title }, true);
-
-			});
+			*/
 		}
-	});
+
+		const req2 = await axios({
+			method: 'GET',
+			url: 'https://services.vrt.be/epg/onair?channel_code=55',
+			headers: {
+				'Accept': 'application/vnd.epg.vrt.be.onairs_1.0+json'
+			}
+		});
+
+		const parsedResult2 = req2.data["onairs"][0]["now"];
+
+		//log.debug(parsedResult);
+
+		let artist, title;
+		if (!parsedResult2.presenters.length) {
+			artist = parsedResult2.title;
+			title = parsedResult2.shortDescription;
+		} else {
+			artist = parsedResult2.presenters[0].name;
+			title = parsedResult2.title;
+		}
+
+		return { artist: artist, title: title };
+
+	} catch (err) {
+		return { error: err };
+	}
 }
+
 //https://services.vrt.be/music/songs?title=SAY%20SOMETHING%20&artist_name=JUSTIN%20TIMBERLAKE%20feat.%20CHRIS%20STAPLETON&accept=application%2Fvnd.music.vrt.be.songs_2.0%2Bjson

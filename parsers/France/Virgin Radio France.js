@@ -4,39 +4,27 @@
 
 // Copyright (c) 2018 Alexandre Storelli
 
-var get = require("../get.js");
-const { log } = require("abr-log")("meta-France_Virgin Radio");
+"use strict";
+const axios = require("axios");
 
-module.exports = function(exturl, callback) {
-	var now = new Date(+new Date() - 15*60*1000).toISOString().replace(/T/g, " ").replace(/Z/g, "").slice(0, 19);
-	//log.debug(exturl + now);
-	get(exturl + now, function(err, result, corsEnabled) {
-		//log.debug("received");
-		if (err) {
-			return callback(err, null, null);
-		}
-
-		try {
-			parsedResult = JSON.parse(result);
-			var curTrack = parsedResult["root_tab"]["event"]["0"];
-		} catch(e) {
-			return callback(e.message, null, null);
-		}
+module.exports = async function(exturl) {
+	try {
+		const now = new Date(+new Date() - 15*60*1000).toISOString().replace(/T/g, " ").replace(/Z/g, "").slice(0, 19);
+		const req = await axios.get(exturl + now);
+		let parsedResult = req.data;
+		let curTrack = parsedResult["root_tab"]["event"]["0"];
 
 		if (!curTrack) {
 			//log.debug("first URL did not contain useful data");
-			get("https://www.virginradio.fr/calendar/api/current.json", function(err, result2, corsEnabled) {
-				//log.debug(result2);
-				try {
-					parsedResult = JSON.parse(result2);
-					curTrack = parsedResult["root_tab"]["events"]["0"];
-				} catch(e) {
-					return callback(e.message, null, null);
-				}
-				return callback(null, { artist: "Virgin Radio", title: curTrack["title"], cover: null }, corsEnabled);
-			});
+			const result2 = await axios.get("https://www.virginradio.fr/calendar/api/current.json");
+			parsedResult = result2.data;
+			curTrack = parsedResult["root_tab"]["events"]["0"];
+			return { artist: "Virgin Radio", title: curTrack["title"] };
 		} else {
-			return callback(null, { artist: curTrack["artist"].replace(/\|/g, ""), title: curTrack["title"], cover: curTrack["cover"] }, corsEnabled);
+			return { artist: curTrack["artist"].replace(/\|/g, ""), title: curTrack["title"], cover: curTrack["cover"] };
 		}
-	});
+
+	} catch (err) {
+		return { error: err };
+	}
 }

@@ -4,16 +4,13 @@
 
 // Copyright (c) 2018 Alexandre Storelli
 
-var get = require("../get.js");
-var htmlToStr = require("../htmlToStr.js");
+"use strict";
+const axios = require("axios");
 
-module.exports = function(exturl, callback) {
-	get(exturl + "?after=" + (+new Date() - 60*60000), function(err, result, corsEnabled) {
-
-		if (err) {
-			return callback(err, null, null);
-		}
-
+module.exports = async function(exturl) {
+	try {
+		const req = await axios.get(exturl + "?after=" + (+new Date() - 60*60000));
+		const result = req.data;
 		var b0 = "<article class=\"timeline-post timeline-post--music\"";
 		var i0 = result.indexOf(b0);
 		var r1 = result.slice(i0+b0.length); //.replace(/\n/g, '');
@@ -40,6 +37,10 @@ module.exports = function(exturl, callback) {
 		var i4 = r4.indexOf(b4);
 		var meta2 = r4.slice(0, i4); // music artist
 
-		return callback(null, { artist:htmlToStr(meta2), title:htmlToStr(meta1), cover: cover }, corsEnabled);
-	});
+		return { artist: meta2, title: meta1, cover: cover };
+		// meta1 and meta2 may need some additional processing:
+		// str.replace(/&#039;/g, "’").replace(/&amp;/g, '&').replace(/\n/g, ' ').replace(/\t/g, '').replace(/\r/g, '').trim()
+	} catch (err) {
+		return { error: err };
+	}
 }

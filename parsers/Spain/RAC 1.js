@@ -4,16 +4,14 @@
 
 // Copyright (c) 2018 Alexandre Storelli
 
-var get = require("../get.js");
-var htmlToStr = require("../htmlToStr.js");
+"use strict";
+const axios = require("axios");
+const htmlToStr = require("../htmlToStr.js");
 
-module.exports = function(exturl, callback) {
-	get(exturl + "?after=" + (+new Date() - 60*60000), function(err, result, corsEnabled) {
-
-		if (err) {
-			return callback(err, null, null);
-		}
-
+module.exports = async function(exturl) {
+	try {
+		const req = await axios.get(exturl);
+		const result = req.data;
 		var b0 = "img src=\"";
 		var i0 = result.indexOf(b0);
 		var r1 = result.slice(i0+b0.length); //.replace(/\n/g, '');
@@ -37,7 +35,9 @@ module.exports = function(exturl, callback) {
 		var i4 = r4.indexOf(b4);
 		let artist = htmlToStr(r4.slice(0, i4));
 		if (artist.slice(0, 4) === "amb ") artist = artist.slice(4);
+		return { artist: artist, title: title, cover: cover };
 
-		return callback(null, { artist: artist, title: title, cover: cover }, corsEnabled);
-	});
+	} catch (err) {
+		return { error: err };
+	}
 }

@@ -4,20 +4,16 @@
 
 // Copyright (c) 2018 Alexandre Storelli
 
-var get = require("../get.js");
+"use strict";
+const axios = require("axios");
 
-module.exports = function(exturl, callback) {
-	get(exturl, function(err, result, corsEnabled) {
-		if (err) {
-			return callback(err, null, null);
-		}
-
-		try {
-			parsedResult = JSON.parse(result);
-			var curTrack = parsedResult["itms"]["0"];
-			return callback(null, { artist: curTrack["art"], title: curTrack["tit"], cover: "https://players.nrjaudio.fm/live-metadata/player/img/600x/" + curTrack["cov"] }, corsEnabled);
-		} catch(e) {
-			return callback(e.message, null, null);
-		}
-	});
+module.exports = async function(exturl) {
+	try {
+		const req = await axios.get(exturl);
+		const parsedResult = req.data;
+		var curTrack = parsedResult["itms"]["0"];
+		return { artist: curTrack["art"], title: curTrack["tit"], cover: "https://players.nrjaudio.fm/live-metadata/player/img/600x/" + curTrack["cov"] };
+	} catch (err) {
+		return { error: err };
+	}
 }

@@ -4,24 +4,15 @@
 
 // Copyright (c) 2018 Alexandre Storelli
 
-var get = require("../get.js");
-const { log } = require("abr-log")("meta-France_Europe 1");
+"use strict";
+const axios = require("axios");
 
+module.exports = async function(exturl) {
+	try {
+		const now = new Date();
+		const req = await axios.get(exturl + "?cc=" + now.getFullYear() + now.getMonth() + now.getDate());
+		const parsedResult = JSON.parse(req.data.slice(8));
 
-module.exports = function(exturl, callback) {
-	var now = new Date();
-	get(exturl + "?cc=" + now.getFullYear() + now.getMonth() + now.getDate(), function(err, result, corsEnabled) {
-		if (err) {
-			return callback(err, null, null);
-		}
-
-		try {
-			parsedResult = JSON.parse(result.slice(8)); // remove "var cnt=" at the beginning
-		} catch(e) {
-			return callback(e.message, null, null);
-		}
-
-		var now = new Date();
 		var dayOfWeekFr = ['dimanche','lundi','mardi','mercredi','jeudi','vendredi','samedi'][now.getDay()];
 		parsedResult.diffusions[dayOfWeekFr] = parsedResult.diffusions[dayOfWeekFr].filter(function (x, i, a) { // remove duplicate entries
 			return a.indexOf(x) == i;
@@ -29,15 +20,17 @@ module.exports = function(exturl, callback) {
 		var items = parsedResult.diffusions[dayOfWeekFr];
 		var nowStr = now.toLocaleTimeString('en-US', { hour12: false });
 
-		for (iit=0; iit<items.length; iit++) {
+		for (let iit=0; iit<items.length; iit++) {
 			var item = parsedResult["infos"][items[iit]];
 			//log.debug(item.begin + " -- " + nowStr + " -- " + item.end);
 			if (item.begin <= nowStr && nowStr < item.end) {
 				//log.debug(iit + " ==> " + JSON.stringify(item));
-				return callback(null, { artist: item["speaker"], title: item["titre"], cover: "https:" + item["image"] }, corsEnabled);
+				return { artist: item["speaker"], title: item["titre"], cover: "https:" + item["image"] };
 			}
 		}
 
-		return callback("Europe 1: program not found", null, null);
-	});
+		return { error: "Europe 1: program not found" };
+	} catch (err) {
+		return { error: err };
+	}
 }

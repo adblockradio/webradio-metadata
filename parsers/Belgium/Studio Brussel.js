@@ -4,54 +4,37 @@
 
 // Copyright (c) 2018 Alexandre Storelli
 
-var get = require("../get.js");
-const htmlToStr = require("../htmlToStr.js");
-const { log } = require("abr-log")("meta-Belgium_Studio Brussel");
+"use strict";
+const axios = require("axios");
 
+module.exports = async function(exturl) {
+	try {
+		const req = await axios.get(exturl);
+		const parsedResult = req.data["onairs"].filter(e => e.onairType === "NOW");
 
-module.exports = function(exturl, callback) {
-	get(exturl, function(err, result, corsEnabled) {
-		if (err) {
-			return callback(err, null, null);
+		if (parsedResult.length && parsedResult[0]["properties"]) {
+			//log.debug("music");
+			const p = parsedResult[0]["properties"];
+			const artist = p.filter(e => e.key === "ARTISTNAME")[0].value.trim();
+			const title = p.filter(e => e.key === "TITLE")[0].value.trim();
+			return { artist: artist, title: title };
 		}
 
-		try {
-			parsedResult = JSON.parse(decodeURI(result))["onairs"];
-			//log.debug(JSON.stringify(parsedResult, null, "\t"));
-			parsedResult = parsedResult.filter(e => e.onairType === "NOW");
-			if (parsedResult.length && parsedResult[0]["properties"]) {
-				//log.debug("music");
-				const p = parsedResult[0]["properties"];
-				const artist = p.filter(e => e.key === "ARTISTNAME")[0].value.trim();
-				const title = p.filter(e => e.key === "TITLE")[0].value.trim();
-				return callback(null, { artist: artist, title: title }, corsEnabled);
-			}
-		} catch (e) {
-			return callback(e.message, null, null);
+		const req2 = await axios.get("https://services.vrt.be/epg/onair?channel_code=41&accept=" + encodeURIComponent("application/vnd.epg.vrt.be.onairs_1.0+json"));
+		const parsedResult2 = req2.data["onairs"][0]["now"];
+
+		//log.debug(JSON.stringify(parsedResult2, null, "\t"));
+		let artist, title;
+		if (!parsedResult2.presenters.length) {
+			artist = parsedResult2.title;
+			title = parsedResult2.shortDescription;
+		} else {
+			artist = parsedResult2.presenters[0].name;
+			title = parsedResult2.title;
 		}
+		return { artist: artist, title: title };
 
-		//log.debug("no music");
-		get("https://services.vrt.be/epg/onair?channel_code=41&accept=" + encodeURIComponent("application/vnd.epg.vrt.be.onairs_1.0+json"), function(err, stdout, corsEnabled) {
-			try {
-				parsedResult = JSON.parse(stdout);
-				parsedResult = parsedResult["onairs"][0]["now"];
-				//log.debug(JSON.stringify(parsedResult, null, "\t"));
-				let artist, title;
-				if (!parsedResult.presenters.length) {
-					artist = parsedResult.title;
-					title = parsedResult.shortDescription;
-				} else {
-					artist = parsedResult.presenters[0].name;
-					title = parsedResult.title;
-				}
-				//const artist = parsedResult.presenters[0].name;
-				//const title = parsedResult.title;
-
-				return callback(null, { artist: artist, title: title }, corsEnabled);
-			} catch (e) {
-				log.debug(stdout);
-				return callback(e.message, null, null);
-			}
-		});
-	});
+	} catch (err) {
+		return { error: err };
+	}
 }

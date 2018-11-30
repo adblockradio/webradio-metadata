@@ -4,28 +4,19 @@
 
 // Copyright (c) 2018 Alexandre Storelli
 
-var get = require("../get.js");
-const { log } = require("abr-log")("meta-Germany_Radio 7");
+"use strict";
+const axios = require("axios");
 
-module.exports = function(exturl, callback) {
-	get(exturl, function(err, result, corsEnabled) {
-
-		if (err) {
-			return callback(err, null, null);
-		}
-
-		try {
-			var parsedResult = JSON.parse(result);
-			parsedResult = parsedResult[8]; //.filter(e => e.stream === "Radio 7 Digital")[0];
-		} catch(e) {
-			log.debug(result);
-			return callback(e.message, null, null);
-		}
-
+module.exports = async function(exturl) {
+	try {
+		const req = await axios.get(exturl);
+		const parsedResult = req.data[8];
 		const artist = parsedResult["artist_name"];
 		const title = parsedResult["song_title"];
 		const cover = parsedResult["covers"]["cover_art_url_xl"];
 
-		return callback(null, { artist: artist, title: title, cover: cover }, corsEnabled);
-	});
+		return { artist: artist, title: title, cover: cover };
+	} catch (err) {
+		return { error: err };
+	}
 }

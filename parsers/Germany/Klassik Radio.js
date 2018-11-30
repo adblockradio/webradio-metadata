@@ -4,27 +4,18 @@
 
 // Copyright (c) 2018 Alexandre Storelli
 
-var get = require("../get.js");
-const { log } = require("abr-log")("meta-Germany_Klassik Radio");
+"use strict";
+const axios = require("axios");
 
-module.exports = function(exturl, callback) {
-	get(exturl, function(err, result, corsEnabled) {
-
-		if (err) {
-			return callback(err, null, null);
-		}
-
-		try {
-			parsedResult = JSON.parse(result);
-			parsedResult = parsedResult.nowPlaying[0];
-		} catch(e) {
-			log.debug(result);
-			return callback(e.message, null, null);
-		}
-
+module.exports = async function(exturl) {
+	try {
+		const req = await axios.get(exturl);
+		let parsedResult = req.data;
+		parsedResult = parsedResult.nowPlaying[0];
 		const artist = parsedResult.composer;
 		const title = parsedResult.title;
-
-		return callback(null, { artist: artist, title: title }, corsEnabled);
-	});
+		return { artist: artist, title: title };
+	} catch (err) {
+		return { error: err };
+	}
 }

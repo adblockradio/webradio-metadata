@@ -5,19 +5,22 @@
 // Copyright (c) 2018 Alexandre Storelli
 
 "use strict";
-var get = require("../get.js");
-const htmlToStr = require("../htmlToStr.js");
+const axios = require("axios");
+//const htmlToStr = require("../htmlToStr.js");
 const { log } = require("abr-log")("meta-Belgium_Bel-RTL");
 
-module.exports = function(exturl, callback) {
-	get(exturl, function(err, result, corsEnabled) {
+module.exports = async function(exturl) {
+	try {
+		const req = await axios.get(exturl, {
+			transformResponse: [function (data) {
+				data = JSON.parse(data.trim());
+				return data;
+			  }],
+		});
 
-		if (err) {
-			return callback(err, null, null);
-		}
-
-		const time = new Date().toLocaleTimeString("fr-be", { timeZone: "Europe/Brussels" })
-		const date = new Date().toLocaleDateString("fr-be", { timeZone: "Europe/Brussels" }).replace(/-/g, "/");
+		const now = new Date();
+		const time = now.toLocaleTimeString("fr-be", { timeZone: "Europe/Brussels" })
+		const date = now.toLocaleDateString("fr-be", { timeZone: "Europe/Brussels" }).replace(/-/g, "/");
 		const reversedDate = date.split("/").reverse().join("/");
 		/* sample result:
 		{
@@ -44,44 +47,36 @@ module.exports = function(exturl, callback) {
 			]
 		}
 		*/
-		//log.debug(now);
-		try {
-			var parsedResult = JSON.parse(htmlToStr(result));
-			parsedResult = parsedResult["epg"];
+
+		var parsedResult = req.data;
+		parsedResult = parsedResult["epg"];
+		if (parsedResult && parsedResult.filter) {
+			log.debug("try filter");
 			parsedResult = parsedResult.filter(e => date >= e.date && time >= e.timing && (reversedDate + " " + time) < e.timingend)[0];
 			if (parsedResult) {
 				//log.debug(result2);
 				const artist = (parsedResult["animators"] && parsedResult["animators"][0] && parsedResult["animators"][0]["Name"]) || "Bel RTL";
 				const title = parsedResult["title"] || "Bel RTL";
 				const cover = "https://www.rtl.be/belrtl" + parsedResult["img"];
-				return callback(null, { artist: artist, title: title, cover: cover }, corsEnabled);
+				return { artist: artist, title: title, cover: cover };
 			}
-		} catch (e) {
-			log.debug(result);
-			return callback(e.message, null, null);
 		}
 
+		const req2 = await axios.get("https://www.radiocontact.be/json/epg24h_4.json");
+		parsedResult = req2.data;
+		parsedResult = parsedResult.items;
+		parsedResult = parsedResult.filter(e => (now >= new Date(e.datetime)) && (now < new Date(+new Date(e.datetime) + Number(e.duration) * 60000)))[0];
+		//log.debug(parsedResult);
+		const artist = "Bel RTL";
+		const title = (parsedResult && parsedResult.title) || "Bel RTL";
+		const cover = "https:" + parsedResult.image;
+		return { artist: artist, title: title, cover: cover };
 
-		log.debug("first result is empty");
-		get("https://www.radiocontact.be/json/epg24h_4.json", function(err, result2, corsEnabled) {
-			try {
-				parsedResult = JSON.parse(htmlToStr(result2));
-				const now = new Date();
-				parsedResult = parsedResult.items;
-				parsedResult = parsedResult.filter(e => (now >= new Date(e.datetime)) && (now < new Date(+new Date(e.datetime) + Number(e.duration) * 60000)))[0];
-				//log.debug(parsedResult);
-				const artist = "Bel RTL";
-				const title = (parsedResult && parsedResult.title) || "Bel RTL";
-				const cover = "https:" + parsedResult.image;
-				return callback(null, { artist: artist, title: title, cover: cover }, corsEnabled);
-			} catch (e) {
-				log.debug(result);
-				return callback(e.message, null, null);
-			}
-		});
-	});
-
-	/*
+	} catch (err) {
+		return { error: err };
+	}
+}
+/*
 	Metadata with songs names is a bit complex and needs cookie headers to work.
 	let exturl = "https://belrtl.ice.infomaniak.ch/metadata?type=json&cb=58761570037";
 	exec("curl '" + exturl + "' --compressed -H 'Cookie: AISSessionId=5a4f31406ed1d34c_15394354_TI8hJRPc_MTg1Ljc0LjcwLjk!_000000aAkw6'", (error, stdout, stderr) => {
@@ -100,5 +95,4 @@ module.exports = function(exturl, callback) {
 
 		log.debug(parsedResult);
 	});
-	*/
-}
+*/

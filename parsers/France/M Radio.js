@@ -4,21 +4,32 @@
 
 // Copyright (c) 2018 Alexandre Storelli
 
-var parseString = require('xml2js').parseString;
-var get = require("../get.js");
+"use strict";
+const parseString = require('xml2js').parseString;
+const axios = require("axios");
+//const { log } = require("abr-log")("Meta-M Radio");
 
-module.exports = function(exturl, callback) {
-	get(exturl + (+new Date()), function(err, result, corsEnabled) {
-		if (err) {
-			return callback(err, null, null);
-		}
+module.exports = async function(exturl) {
+	try {
+		const req = await axios.get(exturl);
+		const result = req.data;
 
-		parseString(result, function (err, ro) {
-			if (err) {
-				return callback(err, null, null);
-			}
-			var parsed = ro.prog.morceau[0];
-			return callback(null, { artist: parsed.chanteur[0], title: parsed.chanson[0], cover: parsed.pochette[0] }, corsEnabled);
-		});
-	});
+		return await new Promise(function(resolve, reject) {
+			parseString(result, function (err, ro) {
+				if (err || !ro || !ro.prog) {
+					return reject("parsing error: " + err);
+				}
+				//log.debug(JSON.stringify(ro.prog.morceau[0], null, '\t'));
+				var parsed = ro.prog.morceau[0];
+				if (parsed) {
+					return resolve({ artist: parsed["chanteur"][0], title: parsed["chanson"][0], cover: parsed["pochette"][0] });
+				} else {
+					return reject("M Radio parsing error");
+				}
+			});
+		})
+
+	} catch (err) {
+		return { error: err };
+	}
 }

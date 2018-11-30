@@ -4,38 +4,33 @@
 
 // Copyright (c) 2018 Alexandre Storelli
 
-var get = require("../get.js");
-const { log } = require("abr-log")("meta-Germany_RTL Radio");
+"use strict";
+const axios = require("axios");
 
-module.exports = function(exturl, callback) {
-	get(exturl, function(err, result, corsEnabled) {
-		if (err) {
-			return callback(err, null, null);
-		}
-
+module.exports = async function(exturl) {
+	try {
+		const req = await axios.get(exturl);
+		const result = req.data;
 		const b1 = "radioplayer.playing.receive(";
 		const b2 = ")";
 
-		try {
-			var r = result.slice(b1.length, result.length - b2.length);
-			parsedResult = JSON.parse(r)["results"]["196"];
-			//log.debug(JSON.stringify(parsedResult, null, "\t"));
+		var r = result.slice(b1.length, result.length - b2.length);
+		const parsedResult = JSON.parse(r)["results"]["196"];
+		//log.debug(JSON.stringify(parsedResult, null, "\t"));
 
-			var curTrack = parsedResult.filter(e => e.type === "PE_E");
-			if (curTrack[0]) {
-				var artist = curTrack[0]["artistName"];
-				var title = curTrack[0]["name"];
-				var cover = curTrack[0]["imageUrl"];
-			} else {
-				var backup = parsedResult.filter(e => e.type === "SI")[0];
-				artist = "RTL";
-				title = "Deutschlands Hit-Radio";
-				cover = backup["imageUrl"];
-			}
-		} catch(e) {
-			log.debug(r);
-			return callback(e.message, null, null);
+		const curTrack = parsedResult.filter(e => e.type === "PE_E");
+		if (curTrack[0]) {
+			var artist = curTrack[0]["artistName"];
+			var title = curTrack[0]["name"];
+			var cover = curTrack[0]["imageUrl"];
+		} else {
+			var backup = parsedResult.filter(e => e.type === "SI")[0];
+			artist = "RTL";
+			title = "Deutschlands Hit-Radio";
+			cover = backup["imageUrl"];
 		}
-		return callback(null, { artist: artist, title: title, cover: cover }, corsEnabled);
-	});
+		return { artist: artist, title: title, cover: cover };
+	} catch (err) {
+		return { error: err };
+	}
 }

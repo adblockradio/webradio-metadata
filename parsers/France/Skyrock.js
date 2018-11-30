@@ -4,20 +4,13 @@
 
 // Copyright (c) 2018 Alexandre Storelli
 
-var get = require("../get.js");
+"use strict";
+const axios = require("axios");
 
-module.exports = function(exturl, callback) {
-	get(exturl, function(err, result, corsEnabled) {
-		if (err) {
-			return callback(err, null, null);
-		}
-
-		try {
-			parsedResult = JSON.parse(result);
-			//var curTrack = parsedResult["currentTrack"];
-		} catch(e) {
-			return callback(e.message, null, null);
-		}
+module.exports = async function(exturl) {
+	try {
+		const req = await axios.get(exturl);
+		const parsedResult = req.data;
 
 		// get program
 		var meta1 = parsedResult["on_air_program"].title;
@@ -29,9 +22,11 @@ module.exports = function(exturl, callback) {
 		var now = Math.round(+new Date()/1000); // epoch
 		for (var i=0; i<records.length; i++) {
 			if (records[i].info["start_ts"] < now && records[i].info["end_ts"] > now) {
-				return callback(null, { artist:records[i].artists[0].name, title:records[i].info["title"], cover: records[i].info["cover_uri"] }, corsEnabled);
+				return { artist:records[i].artists[0].name, title:records[i].info["title"], cover: records[i].info["cover_uri"] };
 			}
 		}
-		return callback(null, { artist: presenter, title:meta1, cover: cover }, corsEnabled);
-	});
+		return { artist: presenter, title:meta1, cover: cover };
+	} catch (err) {
+		return { error: err };
+	}
 }

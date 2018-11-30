@@ -4,15 +4,13 @@
 
 // Copyright (c) 2018 Alexandre Storelli
 
-const get = require("../get.js");
-const { log } = require("abr-log")("meta-France_France Info");
+"use strict";
+const axios = require("axios");
 
-module.exports = function(exturl, callback) {
-	get(exturl, function(err, result, corsEnabled) {
-
-		if (err) {
-			return callback(err, null, null);
-		}
+module.exports = async function(exturl) {
+	try {
+		const req = await axios.get(exturl);
+		const result = req.data;
 
 		var b0 = "program__grid__line expanded";
 		var i0 = result.indexOf(b0);
@@ -29,7 +27,7 @@ module.exports = function(exturl, callback) {
 		var meta1 = r2.slice(i2+b2.length, i3).trim(); // title of the large program window
 
 		if (meta1.length == 0) {
-			return callback("empty line title", null, null);
+			return { error: "empty line title" };
 		}
 
 		var bs = "class=\"program__grid__subline ";
@@ -42,7 +40,7 @@ module.exports = function(exturl, callback) {
 
 		if (currentBlock < 0) {
 			log.warn("France_France Info: warning, could not get subline title");
-			return callback(null, meta1, corsEnabled);
+			return { title: meta1 };
 		}
 
 		//log.debug(r2s[currentBlock]);
@@ -53,6 +51,9 @@ module.exports = function(exturl, callback) {
 		var i5 = r3.indexOf(b5);
 		var meta2 = r3.slice(0, i5).trim(); // title of the precise current program
 
-		return callback(null, { artist: meta1, title: meta2 }, corsEnabled);
-	});
+		return { artist: meta1, title: meta2 };
+
+	} catch (err) {
+		return { error: err };
+	}
 }

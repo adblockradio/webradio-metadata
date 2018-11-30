@@ -4,23 +4,13 @@
 
 // Copyright (c) 2018 Alexandre Storelli
 
-var get = require("../get.js");
-const { log } = require("abr-log")("meta-France_RTL");
+"use strict";
+const axios = require("axios");
 
-module.exports = function(exturl, callback) {
-	get(exturl, function(err, result, corsEnabled) {
-
-		if (err) {
-			return callback(err, null, null);
-		}
-
-		try {
-			parsedResult = JSON.parse(result);
-		} catch(e) {
-			log.debug(result);
-			return callback(e.message, null, null);
-		}
-
+module.exports = async function(exturl) {
+	try {
+		const req = await axios.get(exturl);
+		const parsedResult = req.data;
 		const b1 = "Présenté par : "
 		let i1 = parsedResult.desc.indexOf(b1);
 		if (i1 >= 0) {
@@ -32,6 +22,8 @@ module.exports = function(exturl, callback) {
 		const title = parsedResult.title;
 		const cover = parsedResult.imageUrl;
 
-		return callback(null, { artist: artist, title: title, cover: cover }, corsEnabled);
-	});
+		return { artist: artist, title: title, cover: cover };
+	} catch (err) {
+		return { error: err };
+	}
 }

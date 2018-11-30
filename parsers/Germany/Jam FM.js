@@ -4,24 +4,13 @@
 
 // Copyright (c) 2018 Alexandre Storelli
 
-var get = require("../get.js");
-const { log } = require("abr-log")("meta-Germany_Jam FM");
+"use strict";
+const axios = require("axios");
 
-
-module.exports = function(exturl, callback) {
-	get(exturl, function(err, result, corsEnabled) {
-
-		if (err) {
-			return callback(err, null, null);
-		}
-
-		try {
-			var parsedResult = JSON.parse(result);
-		} catch(e) {
-			log.debug(result);
-			return callback(e.message, null, null);
-		}
-
+module.exports = async function(exturl) {
+	try {
+		const req = await axios.get(exturl);
+		let parsedResult = req.data;
 		parsedResult = parsedResult.filter(e => e.name === "air")[0];
 		parsedResult = parsedResult.playHistories[0].track;
 
@@ -29,6 +18,8 @@ module.exports = function(exturl, callback) {
 		const title = parsedResult.title;
 		const cover = parsedResult.coverUrlMedium;
 
-		return callback(null, { artist: artist, title: title, cover: cover }, corsEnabled);
-	});
+		return { artist: artist, title: title, cover: cover };
+	} catch (err) {
+		return { error: err };
+	}
 }

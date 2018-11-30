@@ -4,45 +4,25 @@
 
 // Copyright (c) 2018 Alexandre Storelli
 
-var get = require("../get.js");
-const { log } = require("abr-log")("meta-Spain_Cadena 100");
+"use strict";
+const axios = require("axios");
 
-module.exports = function(exturl, callback) {
-	get(exturl, function(err, result, corsEnabled) {
-
-		if (err) {
-			return callback(err, null, null);
-		}
-
-		try {
-			var parsedResult = JSON.parse(result);
-		} catch(e) {
-			log.debug(result);
-			return callback(e.message, null, null);
-		}
-
+module.exports = async function(exturl) {
+	try {
+		const req = await axios.get(exturl);
+		const parsedResult = req.data;
 		const artist1 = parsedResult.author;
 		const title1 = parsedResult.title;
+
 		const exturl2 = "http://apih.cadena100.es/v1.0/music.track_info_bytitle/?&str=" + encodeURIComponent(artist1) + " %2F " + encodeURIComponent(title1) + "&type=big";
+		const req2 = await axios.get(exturl2);
+		const parsedResult2 = req2.data;
+		const artist = parsedResult2.artist;
+		const title = parsedResult2.title;
+		const cover = parsedResult2.extraTrack ? parsedResult2.extraTrack.cover : "";
 
-		get(exturl2, function(err, result2, corsEnabled) {
-
-			if (err) {
-				return callback(err, null, null);
-			}
-
-			try {
-				parsedResult = JSON.parse(decodeURI(result2).replace(/\\\//g, "/"));
-			} catch(e) {
-				log.debug(result2);
-				return callback(e.message, null, null);
-			}
-
-			const artist = parsedResult.artist;
-			const title = parsedResult.title;
-			const cover = parsedResult.extraTrack ? parsedResult.extraTrack.cover : "";
-
-			return callback(null, { artist: artist, title: title, cover: cover }, corsEnabled);
-		});
-	});
+		return { artist: artist, title: title, cover: cover };
+	} catch (err) {
+		return { error: err };
+	}
 }

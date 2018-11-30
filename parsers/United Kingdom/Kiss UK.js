@@ -4,14 +4,13 @@
 
 // Copyright (c) 2018 Alexandre Storelli
 
-var get = require("../get.js");
-const { log } = require("abr-log")("meta-United Kingdom_Kiss UK");
+"use strict";
+const axios = require("axios");
 
-module.exports = function(exturl, callback) {
-	get(exturl, function(err, result, corsEnabled) {
-		if (err) {
-			return callback(err, null, null);
-		}
+module.exports = async function(exturl) {
+	try {
+		const req = await axios.get(exturl);
+		const result = req.data;
 
 		const b0 = "window.__PRELOADED_STATE__ = ";
 		const i0 = result.indexOf(b0);
@@ -21,11 +20,10 @@ module.exports = function(exturl, callback) {
 		const i1 = r.indexOf(b1);
 		r = r.slice(0, i1).trim(); //.slice(0, -1); // -1 to remove the last semicolon
 
-		try {
-			parsedResult = JSON.parse(r);
-		} catch(e) {
-			log.debug(r);
-			return callback(e.message, null, null);
+		let parsedResult = JSON.parse(r);
+
+		if (!parsedResult["listenApi"] || !parsedResult["listenApi"]["data"]) {
+			throw new Error("Kiss UK parsed Result does not have listenApi and/or data fields");
 		}
 
 		parsedResult = parsedResult["listenApi"]["data"];
@@ -40,7 +38,9 @@ module.exports = function(exturl, callback) {
 			var cover = parsedResult["stationOnAir"]["episodeImageUrl"];
 		}
 
+		return { artist: artist, title: title, cover: cover };
 
-		return callback(null, { artist: artist, title: title, cover: cover }, corsEnabled);
-	});
+	} catch (err) {
+		return { error: err };
+	}
 }

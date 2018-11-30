@@ -4,20 +4,16 @@
 
 // Copyright (c) 2018 Alexandre Storelli
 
-var get = require("../get.js");
+"use strict";
+const axios = require("axios");
 
-module.exports = function(exturl, callback) {
-	get(exturl, function(err, result, corsEnabled) {
-		if (err) {
-			return callback(err, null, null);
-		}
-
-		try {
-			parsedResult = JSON.parse(result);
-			var curTrack = parsedResult["laradiodelamer"]["0"];
-		} catch(e) {
-			return callback(e.message, null, null);
-		}
-		return callback(null, { artist: curTrack["artist"], title: curTrack["title"], cover: curTrack["img"] }, corsEnabled);
-	});
+module.exports = async function(exturl) {
+	try {
+		const req = await axios.get(exturl);
+		const parsedResult = req.data;
+		var curTrack = parsedResult["laradiodelamer"]["0"];
+		return { artist: curTrack["artist"], title: curTrack["title"], cover: curTrack["img"] };
+	} catch (err) {
+		return { error: err };
+	}
 }

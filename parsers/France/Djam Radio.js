@@ -4,23 +4,29 @@
 
 // Copyright (c) 2018 Alexandre Storelli
 
-const { exec } = require('child_process');
-const { log } = require("abr-log")("meta-France_Europe 1");
+"use strict";
 
-module.exports = function(exturl, callback) {
+const axios = require("axios");
+const qs = require("qs");
+//const { log } = require("abr-log")("meta-Djam Radio");
 
-	exec("curl -H 'Accept: application/json, text/javascript, */*; q=0.01' --compressed -H 'Content-Type: application/x-www-form-urlencoded; charset=UTF-8' --data 'origin=website' " + exturl, (error, stdout, stderr) => {
-		if (error) {
-			return callback(error, null, null);
-		}
-
-		try {
-			parsedResult = JSON.parse(stdout);
-			var curTrack = parsedResult["tracks"]["0"];
-			var picture = curTrack["pictures"][0];
-		} catch(e) {
-			return callback(e.message, null, null);
-		}
-		return callback(null, { artist:curTrack["artist"], title:curTrack["title"], cover: picture }, false);
-	});
+module.exports = async function(exturl) {
+	try {
+		const req = await axios({
+			method: 'POST',
+			url: exturl,
+			data : qs.stringify({
+				origin: 'website'
+			}),
+			headers: {
+				'Accept': 'application/json, text/javascript, */*; q=0.01',
+				'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+		}});
+		const parsedResult = req.data;
+		const curTrack = parsedResult["tracks"]["0"];
+		const picture = curTrack["pictures"][0];
+		return { artist:curTrack["artist"], title:curTrack["title"], cover: picture };
+	} catch (err) {
+		return { error: err };
+	}
 }

@@ -4,20 +4,16 @@
 
 // Copyright (c) 2018 Alexandre Storelli
 
-var get = require("../get.js");
+"use strict";
+const axios = require("axios");
 
-module.exports = function(exturl, callback) {
-	get(exturl, function(err, result, corsEnabled) {
-		if (err) {
-			return callback(err, null, null);
-		}
-
-		try {
-			parsedResult = JSON.parse(result);
-		} catch(e) {
-			return callback(e.message, null, null);
-		}
+module.exports = async function(exturl) {
+	try {
+		const req = await axios.get(exturl);
+		const parsedResult = req.data;
 		// switch artist and title
-		return callback(null, { artist: parsedResult["title"], title: parsedResult["artist"], cover: parsedResult["image"] }, corsEnabled);
-	});
+		return { artist: parsedResult["title"], title: parsedResult["artist"], cover: parsedResult["image"] };
+	} catch (err) {
+		return { error: err };
+	}
 }

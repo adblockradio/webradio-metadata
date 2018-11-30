@@ -4,14 +4,15 @@
 
 // Copyright (c) 2018 Alexandre Storelli
 
-var get = require("../get.js");
+"use strict";
+const axios = require("axios");
 
-module.exports = function(exturl, callback) {
-	get(exturl, function(err, result, corsEnabled) {
-		if (err) {
-			return callback(err, null, null);
-		}
-		var split = result.split("|");
-		return callback(null, { artist: split[0], title: split[1] }, corsEnabled);
-	});
+module.exports = async function(exturl) {
+	try {
+		const req = await axios.get(exturl);
+		var split = req.data.split("|");
+		return { artist: split[0], title: split[1] };
+	} catch (err) {
+		return { error: err };
+	}
 }

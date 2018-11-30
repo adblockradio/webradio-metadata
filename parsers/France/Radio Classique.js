@@ -4,24 +4,21 @@
 
 // Copyright (c) 2018 Alexandre Storelli
 
-var get = require("../get.js");
+"use strict";
+const axios = require("axios");
 
-module.exports = function(exturl, callback) {
-	get(exturl, function(err, result, corsEnabled) {
-		if (err) {
-			return callback(err, null, null);
-		}
+module.exports = async function(exturl) {
+	try {
+		const req = await axios.get(exturl);
+		const parsedResult = req.data;
+		const artist = parsedResult["auteur"].replace(/:/g, " ").trim();
+		const title = parsedResult["titre"].replace(/\%\\n/g, " ").trim(); //.replace(/\\n/g, " - ")
+		return { arstist: artist, title: title };
 
-		try {
-			parsedResult = JSON.parse(result);
-			var artist = parsedResult["auteur"].replace(/:/g, " ").trim();
-			var title = parsedResult["titre"].replace(/\%\\n/g, " ").trim(); //.replace(/\\n/g, " - ")
-		} catch(e) {
-			return callback(e.message, null, null);
-		}
-		return callback(null, { arstist:artist, title:title }, corsEnabled);
-
-		// TODO
-		// to get cover, parse rc_composers list from https://www.radioclassique.fr/radio/direct/
-	});
+	} catch (err) {
+		return { error: err };
+	}
 }
+
+// TODO
+// to get cover, parse rc_composers list from https://www.radioclassique.fr/radio/direct/

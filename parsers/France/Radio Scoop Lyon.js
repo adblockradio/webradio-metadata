@@ -4,21 +4,28 @@
 
 // Copyright (c) 2018 Alexandre Storelli
 
-const { exec } = require('child_process');
+"use strict";
 
-module.exports = function(exturl, callback) {
+const axios = require("axios");
+//const qs = require("qs");
+//const { log } = require("abr-log")("meta-Djam Radio");
 
-	exec('curl -X POST -d "data[]=event_getLastEvent(17317) ;" ' + exturl, (error, stdout, stderr) => {
-		if (error) {
-			console.error(`exec error: ${error}`);
-			return callback(error, null, null);
-		}
-		var i1 = stdout.indexOf("setEvent('");
-		stdout = stdout.slice(i1+10);
-		var i2 = stdout.indexOf("') ; } catch (e) {}");
-		stdout = stdout.slice(0, i2);
-		var fields = stdout.split("', '");
+module.exports = async function(exturl) {
+	try {
+		const req = await axios({
+			method: 'POST',
+			url: exturl,
+			data : "data[]=event_getLastEvent(17317) ;",
+		});
+		let result = req.data;
+		var i1 = result.indexOf("setEvent('");
+		result = result.slice(i1+10);
+		var i2 = result.indexOf("') ; } catch (e) {}");
+		result = result.slice(0, i2);
+		var fields = result.split("', '");
 
-		return callback(null, { artist: fields[1], title: fields[0], cover: exturl.slice(0, exturl.length-8) + "/img.php?id=" + fields[2] + "&w=330&h=330" }, false);
-	});
+		return { artist: fields[1], title: fields[0], cover: exturl.slice(0, exturl.length-8) + "/img.php?id=" + fields[2] + "&w=330&h=330" };
+	} catch (err) {
+		return { error: err };
+	}
 }

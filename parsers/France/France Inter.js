@@ -4,30 +4,22 @@
 
 // Copyright (c) 2018 Alexandre Storelli
 
-var get = require("../get.js");
-const { log } = require("abr-log")("meta-France_France Inter");
+"use strict";
+const axios = require("axios");
 
-module.exports = function(exturl, callback) {
-	get(exturl, function(err, result, corsEnabled) {
-		if (err) {
-			return callback(err, null, null);
-		}
-
-		try {
-			parsedResult = JSON.parse(result);
-		} catch(e) {
-			return callback(e.message, null, null);
-		}
-
-		var now = Math.floor(new Date() / 1000);
-		for (ip = parsedResult.length - 1; ip >= 0; ip--) {
-			var item = parsedResult[ip];
+module.exports = async function(exturl) {
+	try {
+		const req = await axios.get(exturl);
+		const parsedResult = req.data;
+		const now = Math.floor(new Date() / 1000);
+		for (let ip = parsedResult.length - 1; ip >= 0; ip--) {
+			const item = parsedResult[ip];
 			if (now < item.end && (now >= item.start || (ip > 0 && now >= parsedResult[ip-1].end))) {
-				var artist = null;
+				let artist = null;
 				if (item["conceptParentTitle"]) {
 					artist = item["conceptParentTitle"];
 				}
-				var title = item["conceptTitle"];
+				let title = item["conceptTitle"];
 				if (title.indexOf(item["expressionTitle"]) < 0 && item["expressionTitle"].indexOf(title) < 0) {
 					if (artist == null) {
 						artist = title;
@@ -36,14 +28,12 @@ module.exports = function(exturl, callback) {
 						title += " - " + item["expressionTitle"];
 					}
 				}
-				var cover = (item["visual"] && item["visual"]["imgUrl"]) ? item["visual"]["imgUrl"] : null;
-				return callback(null, { artist: artist, title: title, cover: cover }, corsEnabled);
+				const cover = (item["visual"] && item["visual"]["imgUrl"]) ? item["visual"]["imgUrl"] : null;
+				return { artist: artist, title: title, cover: cover };
 			}
 		}
-		/*for (ip = 0; ip<parsedResult.length; ip++) {
-			var item = parsedResult[ip];
-			log.debug("item.start=" + item.start + " item.end=" + item.end);
-		}*/
-		return callback("program not found at time stamp " + now, null, null);
-	});
+		return { error: "program not found at time stamp " + now };
+	} catch (err) {
+		return { error: err };
+	}
 }

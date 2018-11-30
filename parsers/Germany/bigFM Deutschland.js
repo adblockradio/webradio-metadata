@@ -7,26 +7,33 @@
 const W = require("ws");
 const { log } = require("abr-log")("meta-Germany_bigFM Deutschland");
 
-module.exports = function(exturl, callback) {
-	const ws = new W(exturl);
+module.exports = async function(exturl) {
+	try {
+		return await new Promise(function(resolve, reject) {
+			const ws = new W(exturl);
 
-	ws.on('open', function open() {
-		ws.send('Hello server!');
-  	});
+			ws.on('open', function open() {
+				ws.send('Hello server!');
+			});
 
-	ws.on('message', function incoming(data) {
-		try {
-			var parsedData = JSON.parse(data);
-		} catch(e) {
-			log.debug(data);
-			log.error("could not parse data");
-		}
+			ws.on('message', function incoming(data) {
+				try {
+					var parsedData = JSON.parse(data);
+				} catch(e) {
+					log.debug(data);
+					return reject("could not parse data");
+				}
 
-		if (parsedData.day && parsedData.day.HMR) {
-			const o = parsedData.day.HMR[0];
-			ws.terminate();
-			return callback(null, { artist: o.artist, title: o.title, cover: "https://storage.googleapis.com/bigfm-app.appspot.com/v2/covers/" + o.cover }, true);
-		}
-
-	});
+				if (parsedData.day && parsedData.day.HMR) {
+					const o = parsedData.day.HMR[0];
+					ws.terminate();
+					return resolve({ artist: o.artist, title: o.title, cover: "https://storage.googleapis.com/bigfm-app.appspot.com/v2/covers/" + o.cover });
+				} else {
+					return reject("bigFM: no day and/or HMR");
+				}
+			});
+		});
+	} catch (e) {
+		return { error: e };
+	}
 }

@@ -4,28 +4,19 @@
 
 // Copyright (c) 2018 Alexandre Storelli
 
-var get = require("../get.js");
-const { log } = require("abr-log")("meta-Italy_Radio Capital");
+"use strict";
+const axios = require("axios");
 
-
-module.exports = function(exturl, callback) {
-	get(exturl, function(err, result, corsEnabled) {
-		if (err) {
-			return callback(err, null, null);
-		}
-
-		try {
-			parsedResult = JSON.parse(result)["result"];
-		} catch(e) {
-			log.debug(result);
-			return callback(e.message, null, null);
-		}
-
-		//log.debug(JSON.stringify(parsedResult, null, "\t"));
+module.exports = async function(exturl) {
+	try {
+		const req = await axios.get(exturl);
+		const parsedResult = req.data;
 		const artist = parsedResult.artist;
 		const title = parsedResult.title;
 		const cover = parsedResult.coverUrl;
 
-		return callback(null, { artist: artist, title: title, cover: cover }, corsEnabled);
-	});
+		return { artist: artist, title: title, cover: cover };
+	} catch (err) {
+		return { error: err };
+	}
 }

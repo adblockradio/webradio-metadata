@@ -4,25 +4,18 @@
 
 // Copyright (c) 2018 Alexandre Storelli
 
-var get = require("../get.js");
-const { log } = require("abr-log")("meta-Italy_Radio 24");
+"use strict";
+const axios = require("axios");
 
-module.exports = function(exturl, callback) {
-	get(exturl, function(err, result, corsEnabled) {
-		if (err) {
-			return callback(err, null, null);
-		}
-
-		try {
-			parsedResult = JSON.parse(result);
-			//log.debug(JSON.stringify(parsedResult, null, "\t"));
-			const artist = parsedResult["conduttoriList"];
-			const title = parsedResult["label"];
-			const cover = "http://www.radio24.ilsole24ore.com" + parsedResult["foto"]["fotohome2T2"]["@value"];
-			return callback(null, { artist: artist, title: title, cover: cover }, corsEnabled);
-		} catch(e) {
-			log.debug(result);
-			return callback(e.message, null, null);
-		}
-	});
+module.exports = async function(exturl) {
+	try {
+		const req = await axios.get(exturl);
+		const parsedResult = req.data;
+		const artist = parsedResult["conduttoriList"];
+		const title = parsedResult["label"];
+		const cover = "http://www.radio24.ilsole24ore.com" + parsedResult["foto"]["fotohome2T2"]["@value"];
+		return { artist: artist, title: title, cover: cover };
+	} catch (err) {
+		return { error: err };
+	}
 }

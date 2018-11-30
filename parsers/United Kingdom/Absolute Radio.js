@@ -4,18 +4,13 @@
 
 // Copyright (c) 2018 Alexandre Storelli
 
-var get = require("../get.js");
-const { log } = require("abr-log")("meta-United Kingdom_Absolute Radio");
+"use strict";
+const axios = require("axios");
 
-module.exports = function(exturl, callback) {
-	get(exturl, function(err, result, corsEnabled) {
-
-		if (err) {
-			return callback(err, null, null);
-		}
-
-		//log.debug(result);
-
+module.exports = async function(exturl) {
+	try {
+		const req = await axios.get(exturl);
+		const result = req.data;
 		const b0 = "title=\"Listen to Absolute Radio\">";
 		const i0 = result.indexOf(b0);
 		let r = result.slice(i0);
@@ -44,6 +39,8 @@ module.exports = function(exturl, callback) {
 		const i6 = r.indexOf(b6);
 		const title = r.slice(0, i6);
 
-		return callback(null, { artist: artist, title: title, cover: cover }, corsEnabled);
-	});
+		return { artist: artist, title: title, cover: cover };
+	} catch (err) {
+		return { error: err };
+	}
 }

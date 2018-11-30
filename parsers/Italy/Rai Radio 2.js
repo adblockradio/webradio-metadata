@@ -4,22 +4,13 @@
 
 // Copyright (c) 2018 Alexandre Storelli
 
-var get = require("../get.js");
-const { log } = require("abr-log")("meta-Italy_Rai Radio 2");
+"use strict";
+const axios = require("axios");
 
-module.exports = function(exturl, callback) {
-	get(exturl, function(err, result, corsEnabled) {
-		if (err) {
-			return callback(err, null, null);
-		}
-
-		try {
-			parsedResult = JSON.parse(result);
-		} catch(e) {
-			log.debug(result);
-			return callback(e.message, null, null);
-		}
-
+module.exports = async function(exturl) {
+	try {
+		const req = await axios.get(exturl);
+		let parsedResult = req.data;
 		parsedResult = parsedResult["dirette"].filter(e => e.channel === "Rai Radio 2")[0]["currentItem"];
 
 		//log.debug(JSON.stringify(parsedResult, null, "\t"));
@@ -27,6 +18,8 @@ module.exports = function(exturl, callback) {
 		const title = parsedResult["name"];
 		const cover = parsedResult["isPartOf"]["images"]["square"].replace("[RESOLUTION]", "350x350");
 
-		return callback(null, { artist: artist, title: title, cover: cover }, corsEnabled);
-	});
+		return { artist: artist, title: title, cover: cover };
+	} catch (err) {
+		return { error: err };
+	}
 }
