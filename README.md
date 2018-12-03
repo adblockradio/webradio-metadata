@@ -2,9 +2,11 @@ Collection of urls and parsing scripts to fetch metadata about what is being bro
 * an artist
 * a title
 * a cover image (if available)
-* a CORS flag indicating, if true, that the script can scrape cross-domain in a browser.
+
+Code is JS only.
 
 Note that this module gets the information from the radio websites, as most radios have a website indicating what is being broadcast live.
+
 It could have been possible to parse [ICY metadata](http://www.smackfu.com/stuff/programming/shoutcast.html), but it is missing or broken in most situations.
 
 ## Installation
@@ -57,7 +59,7 @@ A demo server and a React webapp are available in `test-server/`
 ![Demo webserver snapshot](test-server/res/web-interface.png)
 
 ## Usage in browser
-This project uses Node.JS scripts and a JS web interface. Note the Node scripts cannot be put in the web interface, because some of the urls fetched do not have the CORS HTTP header ```Access-Control-Allow-Origin: *```. Ressource loading would be blocked by the browser. It might still work for the radios with the property ```corsEnabled: true``` in the results.
+This project uses Node.JS scripts and a JS web interface. Note the Node scripts cannot be put in the web interface, because some of the urls fetched do not have the CORS HTTP header ```Access-Control-Allow-Origin: *```. Ressource loading would be blocked by the browser.
 
 ## Compatible webradios
 * Belgium - Bel-RTL
@@ -147,21 +149,20 @@ The ```parser``` field indicates the path to the parsing script. It is most ofte
 
 Sample:
 ```javascript
-var get = require("./get.js");
+"use strict";
+const axios = require("axios");
 
-module.exports = function(exturl, callback) {
-  get(exturl, function(err, result, corsEnabled) {
-    if (err) {
-      return callback(err, null, null);
-    }
-
-    // ??? the magic happens here
-    // var artist =
-    // var title =
-    // var cover =
-
-    return callback(null, { artist: artist, title: title, cover: cover }, corsEnabled);
-  });
+module.exports = async function(exturl) {
+	try {
+		const req = await axios.get(exturl);
+    const parsedResult = req.data;
+    // const artist = ???
+    // const title = ???
+    // const cover = ???
+		return { artist: artist, title: title, cover: cover };
+	} catch (err) {
+		return { error: err };
+	}
 }
 ```
 
