@@ -23,7 +23,7 @@ module.exports = [
 	{ name: "NRJ", url: "https://players.nrjaudio.fm/wr_api/live/fr?act=get_cur&id_wr=158&cp=utf8&fmt=json", parser: require("./NRJ") },
 	{ name: "OÜI FM", url: "https://www.ouifm.fr/onair.json", parser: require("./OÜI FM") },
 	{ name: "Radio Classique", url: "https://d3gf3bsqck8svl.cloudfront.net/direct-metadata/current.json", parser: require("./Radio Classique") },
-	{ name: "Radio FG", url: "https://www.radiofg.com/cache/titreplayer10", parser: require("./Radio FG") },
+	{ name: "Radio FG", url: "https://www.radiofg.com/players/index/gettitrageplayer/idplayers/2174546520932614607", parser: require("./Radio FG") },
 	{ name: "Radio Meuh", url: "http://player.radiomeuh.com/rtdata/tracks.json", parser: require("./Radio Meuh") },
 	{ name: "Radio Nova",	url: "http://www.nova.fr/radio/19577/player", parser: require("./Radio Nova") },
 	{ name: "Radio Scoop Lyon", url: "https://radioscoop.com/dyn/xhr.php", parser: require("./Radio Scoop Lyon") },
@@ -33,7 +33,7 @@ module.exports = [
 	{ name: "RTL", url: "https://www.rtl.fr/direct/live-player-config.json", parser: require("./RTL") },
 	{ name: "RTL2", url: "https://www.rtl2.fr/direct", parser: require("./RTL2") },
 	{ name: "Skyrock", url: "http://skyrock.fm/api/v3/player/onair", parser: require("./Skyrock") },
-	{ name: "TSF Jazz", url: "http://www.tsfjazz.com/getSongInformations.php", parser: require("./TSF Jazz") },
+	{ name: "TSF Jazz", url: "https://api.tsfjazz.com/api/tracklists/current/TSF?radio=TSF", parser: require("./TSF Jazz") },
 	{ name: "Virgin Radio France", url: "https://www.virginradio.fr/radio/api/get_all_events.json/argv/id_radio/2/start/", parser: require("./Virgin Radio France") },
 	{ name: "Voltage", url: "https://www.voltage.fr/players/index/gettitrageplayer/idplayers/2174546520932614870", parser: require("./Radio FG") },
 ]

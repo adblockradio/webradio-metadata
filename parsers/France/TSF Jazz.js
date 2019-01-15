@@ -10,8 +10,11 @@ const axios = require("axios");
 module.exports = async function(exturl) {
 	try {
 		const req = await axios.get(exturl);
-		var split = req.data.split("|");
-		return { artist: split[0], title: split[1] };
+		if (!req.data || !req.data.artist || !req.data.title) {
+			return { artist: "TSF Jazz", title: "TSF Jazz" }
+		} else {
+			return { artist: req.data.artist, title: req.data.title, cover: req.data.thumbnail_medium };
+		}
 	} catch (err) {
 		return { error: err };
 	}

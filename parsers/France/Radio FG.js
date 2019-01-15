@@ -11,8 +11,7 @@ module.exports = async function(exturl) {
 	try {
 		const req = await axios.get(exturl);
 		const parsedResult = req.data;
-		// switch artist and title
-		return { artist: parsedResult["title"], title: parsedResult["artist"], cover: parsedResult["image"] };
+		return { artist: parsedResult["artist"], title: parsedResult["title"], cover: parsedResult["image"] };
 	} catch (err) {
 		return { error: err };
 	}
