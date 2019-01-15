@@ -1,19 +1,21 @@
 const path = require('path');
-//const webpack = require('webpack');
+const webpack = require('webpack');
 
 module.exports = {
 	entry: './index.js',
 	output: {
 		path: path.resolve(__dirname, 'build/'),
-		filename: 'webradio-metadata.js'
+		filename: 'webradio-metadata.js',
+		library: 'WebradioMetadata',
+		libraryTarget: 'umd',
 	},
-	/*plugins: [
+	plugins: [
 		new webpack.ContextReplacementPlugin(/file-stream-rotator$/, ctx => {
 			for (const x of ctx.dependencies) {
 				x.critical = false;
 			}
 		})
-	],*/
+	],
 	target: 'node',
 	mode: 'production'
 };

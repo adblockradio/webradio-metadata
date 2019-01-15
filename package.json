@@ -5,7 +5,7 @@
 	"main": "index.js",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
-		"build": "node ./node_modules/webpack/bin/webpack.js && cd build && tar -czvf webradio-metadata.js.tar.gz webradio-metadata.js && sha256sum webradio-metadata.js > webradio-metadata.js.sha256sum"
+		"build": "node ./node_modules/webpack/bin/webpack.js && cd build && tar -czvf webradio-metadata.js.tar.gz webradio-metadata.js && sha256sum webradio-metadata.js.tar.gz > webradio-metadata.js.tar.gz.sha256sum"
 	},
 	"author": "Alexandre Storelli",
 	"keywords": [
