@@ -55,7 +55,7 @@ exports.getAll = getAll = function(callback) {
 				corsEnabled: corsEnabled
 			});
 			if (LOG_ERRORS && err) log.warn(jobs[ijob].country + "_" + jobs[ijob].name + " : error=" + err);
-			if (process.argv[2] == "all-human") { //log.info(JSON.stringify(jobs));
+			if (!LOG_ERRORS) { //log.info(JSON.stringify(jobs));
 				if (jobs[ijob].err) {
 					log.warn(jobs[ijob].country + "_" + jobs[ijob].name + " error=" + jobs[ijob].err);
 				} else {
@@ -68,24 +68,33 @@ exports.getAll = getAll = function(callback) {
 	f(0);
 }
 
-if (process.argv.length >= 3 && process.argv[1].slice(-8) == "index.js") { // standalone usage
-	if (process.argv[2] == "list") {				// loop on countries
-		log.info("list of available parsing recipes:");
-		const list = getAvailable();
-		for (let i=0; i<list.length; i++) {
-			console.log("* " + list[i].country + " - " + list[i].name);
+if (require.main === module) { // standalone usage
+	if (process.argv.length === 3) {
+		switch (process.argv[2]) {
+			case "list": // loop on countries
+				log.info("list of available parsing recipes:");
+				const list = getAvailable();
+				for (let i=0; i<list.length; i++) {
+					console.log("* " + list[i].country + " - " + list[i].name);
+				}
+				break;
+
+			case "test":
+				LOG_ERRORS = true;
+			case "all-human":
+				getAll();
+				break;
+
+			case "all-json":
+				getAll(function(jobs) {
+					console.log(JSON.stringify(jobs));
+				});
+				break;
 		}
-	} else if (process.argv[2] == "all-human" || process.argv[2] == "test") {
-		LOG_ERRORS = process.argv[2] == "test";
-		getAll();
-	} else if (process.argv[2] == "all-json") {
-		getAll(function(jobs) {
-			console.log(JSON.stringify(jobs));
-		});
-	} else if (process.argv.length >= 4) {
+
+	} else if (process.argv.length === 4) {
 		getMeta(process.argv[2], process.argv[3], function(err, data) {
 			log.info(JSON.stringify({ err: err, data: data }));
 		});
 	}
-
 }

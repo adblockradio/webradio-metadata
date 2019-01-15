@@ -4,7 +4,8 @@
 	"description": "API scraping recipes to get metadata of radio streams",
 	"main": "index.js",
 	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1"
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"build": "node ./node_modules/webpack/bin/webpack.js && cd build && tar -czvf webradio-metadata.js.tar.gz webradio-metadata.js && sha256sum webradio-metadata.js > webradio-metadata.js.sha256sum"
 	},
 	"author": "Alexandre Storelli",
 	"keywords": [
@@ -31,5 +32,9 @@
 	"repository": {
 		"type": "git",
 		"url": "git://github.com/adblockradio/webradio-metadata.git"
+	},
+	"devDependencies": {
+		"webpack": "^4.28.4",
+		"webpack-cli": "^3.2.1"
 	}
 }
