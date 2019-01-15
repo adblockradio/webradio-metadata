@@ -54,12 +54,9 @@ nodejs index.js all-human
 require("webradio-metadata").getMeta(country, name, function(errors, parsedData, corsEnabled) { ... });
 require("webradio-metadata").getAll(function(results) { ... });
 ```
-## Demo webserver
-A demo server and a React webapp are available in `test-server/`
-![Demo webserver snapshot](test-server/res/web-interface.png)
 
 ## Usage in browser
-This project uses Node.JS scripts and a JS web interface. Note the Node scripts cannot be put in the web interface, because some of the urls fetched do not have the CORS HTTP header ```Access-Control-Allow-Origin: *```. Ressource loading would be blocked by the browser.
+This project uses Node.JS scripts. Code cannot be run in the browser because some of the urls fetched do not have the CORS HTTP header ```Access-Control-Allow-Origin: *```. Ressource loading would be blocked by the browser.
 
 ## Compatible webradios
 * Belgium - Bel-RTL
@@ -68,6 +65,20 @@ This project uses Node.JS scripts and a JS web interface. Note the Node scripts 
 * Belgium - RTBF La Première
 * Belgium - Studio Brussel
 * Belgium - Zen FM
+* Canada - CHMP-FM 98,5 MHz FM, Montréal
+* Canada - CFGL "Rythme Montreal 105.7" Laval, QC
+* Canada - CKOF "104.7 Outaouais" Gatineau, QC
+* Canada - CIME 103.9 St-Jerome, QC
+* Canada - CKOY "107.7 FM Estrie" Sherbrooke, QC
+* Canada - CFGE "Rythme Estrie 93.7 & 98.1" Sherbrooke, QC
+* Canada - CKOB 106.9 Trois-Rivieres, QC
+* Canada - CJEB 100.1 "Rythme 100.1 Mauricie" Trois Rivieres, QC
+* Canada - CFOM "M FM 102.9" Quebec City, QC
+* Canada - CJMF 93.3 "FM93" Quebec City, QC
+* Canada - CKOI 96.9 Montreal, QC
+* Canada - CKBE "The Beat 92.5" Montreal, QC
+* Canada - CISM 89,3 MHz FM Université de Montréal, QC
+* Canada - CHOM 97.7 Montreal, QC
 * France - Alouette
 * France - BFM Business
 * France - Chérie
@@ -153,16 +164,16 @@ Sample:
 const axios = require("axios");
 
 module.exports = async function(exturl) {
-	try {
-		const req = await axios.get(exturl);
+  try {
+    const req = await axios.get(exturl);
     const parsedResult = req.data;
     // const artist = ???
     // const title = ???
     // const cover = ???
-		return { artist: artist, title: title, cover: cover };
-	} catch (err) {
-		return { error: err };
-	}
+    return { artist, title, cover };
+  } catch (error) {
+    return { error };
+  }
 }
 ```
 
