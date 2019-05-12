@@ -85,6 +85,13 @@ This project uses Node.JS scripts. Code cannot be run in the browser because som
 * France - Djam Radio
 * France - Europe 1
 * France - FIP
+* France - FIP tout nouveau, tout FIP
+* France - FIP autour du reggae
+* France - FIP autour de l'électro
+* France - FIP autour du rock
+* France - FIP autour du jazz
+* France - FIP autour du groove
+* France - FIP autour du monde
 * France - France Culture
 * France - France Info
 * France - France Inter
@@ -134,6 +141,7 @@ This project uses Node.JS scripts. Code cannot be run in the browser because som
 * United Kingdom - BBC Radio 3
 * United Kingdom - BBC Radio 4
 * United Kingdom - Kiss UK
+
 
 ## Contributing
 You are welcome to submit a PR to add a new recipe for a radio or to fix a current recipe.
