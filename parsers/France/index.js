@@ -10,7 +10,7 @@ module.exports = [
 	{ name: "Chérie", url: "https://players.nrjaudio.fm/wr_api/live/fr?act=get_plist&id_wr=190&cp=utf8&fmt=json", parser: require("./NRJ") },
 	{ name: "Djam Radio", url: "https://www.djamradio.com/actions/infos.php", parser: require("./Djam Radio") },
 	{ name: "Europe 1", url: "http://cdn1-europe1.new2.ladmedia.fr/var/europe1/storage/diffusions_europe1.js", parser: require("./Europe 1") },
-	{ name: "FIP", url: "https://www.fip.fr/livemeta/7", parser: require("./FIP") },
+	{ name: "FIP", url: "https://www.fip.fr/latest/api/graphql?operationName=Now&variables=%7B%22bannerPreset%22%3A%22600x600-noTransform%22%2C%22stationId%22%3A7%2C%22previousTrackLimit%22%3A3%7D&extensions=%7B%22persistedQuery%22%3A%7B%22version%22%3A1%2C%22sha256Hash%22%3A%228a931c7d177ff69709a79f4c213bd2403f0c11836c560bc22da55628d8100df8%22%7D%7D", parser: require("./FIP") },
 	{ name: "FIP tout nouveau, tout FIP", url: "https://www.fip.fr/livemeta/70", parser: require("./FIP") },
 	{ name: "FIP autour du reggae", url: "https://www.fip.fr/livemeta/71", parser: require("./FIP") },
 	{ name: "FIP autour de l'électro", url: "https://www.fip.fr/livemeta/74", parser: require("./FIP") },
