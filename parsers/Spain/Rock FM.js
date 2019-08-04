@@ -9,21 +9,8 @@ const axios = require("axios");
 
 module.exports = async function(exturl) {
 	try {
-		const req = await axios.get(exturl);
-		let parsedResult = req.data;
-		parsedResult = JSON.parse(decodeURI(parsedResult.value));
-
-		const artist = decodeURIComponent(parsedResult.author);
-		const title = decodeURIComponent(parsedResult.title);
-
-		const exturl2 = "http://player.rockfm.fm/rdsrock.php";
-		const req2 = await axios.get(exturl2);
-		const result2 = req2.data;
-		const b1 = "@";
-		const i1 = result2.indexOf(b1);
-		const r1 = result2.slice(i1 + b1.length);
-		const cover = "http://player.rockfm.fm/xml/img/" + r1;
-		return { artist: artist, title: title, cover: cover };
+		const { data } = await axios.get(exturl);
+		return { artist: "Rock FM", title: data.metadata.title, cover: data.metadata.image };
 
 	} catch (err) {
 		return { error: err };
