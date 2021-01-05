@@ -16,7 +16,7 @@
 	"license": "MPL-2.0",
 	"dependencies": {
 		"abr-log": "^1.0.2",
-		"axios": "^0.18.1",
+		"axios": "^0.21.1",
 		"chalk": "^2.4.2",
 		"loglevel": "^1.6.3",
 		"loglevel-plugin-prefix": "^0.8.3",
