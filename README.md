@@ -1,3 +1,5 @@
+# Note: this repo is archived and not maintained anymore
+
 Collection of urls and parsing scripts to fetch metadata about what is being broadcast on several webradios. Provides for each radio:
 * an artist
 * a title
